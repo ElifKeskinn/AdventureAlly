@@ -86,7 +86,7 @@ namespace CleanArchitecture.UnitTests
         }
 
         [Fact]
-        public async Task When_DeleteProductByIdCommandInvoked_ShouldDeleteProductReturnProductID()
+        public class When_DeleteProductByIdCommandInvoked_ShouldDeleteProductReturnProductID()
         {
          Product product = this.fixture.Create<Product>();
             this.fixture.Customize<DeleteProductByIdCommand>(c => c.With(x => x.Id, product.Id));
@@ -114,7 +114,5 @@ namespace CleanArchitecture.UnitTests
 
     }
 
-    public class When_DeleteProductByIdCommandInvoked_ShouldDeleteProductReturnProductID
-    {
-    }
+   
 }
