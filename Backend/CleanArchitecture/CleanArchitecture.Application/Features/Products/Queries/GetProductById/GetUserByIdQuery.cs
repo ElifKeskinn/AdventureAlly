@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Core.Features.Users.Queries.GetProductById
 {
-    public class GetProductByIdQuery : IRequest<Response<User>>
+    public class GetUserByIdQuery : IRequest<Response<User>>
     {
         public int Id { get; set; }
-        public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Response<User>>
+        public class GetProductByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Response<User>>
         {
             private readonly IUserRepositoryAsync _productRepository;
             public GetProductByIdQueryHandler(IUserRepositoryAsync productRepository)
             {
                 _productRepository = productRepository;
             }
-            public async Task<Response<User>> Handle(GetProductByIdQuery query, CancellationToken cancellationToken)
+            public async Task<Response<User>> Handle(GetUserByIdQuery query, CancellationToken cancellationToken)
             {
                 var product = await _productRepository.GetByIdAsync(query.Id);
                 if (product == null) throw new ApiException($"User Not Found.");

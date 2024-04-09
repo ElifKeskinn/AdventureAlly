@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.Core.Features.Users.Queries.GetAllProducts
 {
-    public class GetAllProductsViewModel
+    public class GetAllUsersViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -9,9 +9,9 @@ namespace CleanArchitecture.Core.Mappings
     {
         public GeneralProfile()
         {
-            CreateMap<User, GetAllProductsViewModel>().ReverseMap();
+            CreateMap<User, GetAllUsersViewModel>().ReverseMap();
             CreateMap<CreateUserCommand, User>();
-            CreateMap<GetAllProductsQuery, GetAllProductsParameter>();
+            CreateMap<GetAllUsersQuery, GetAllUsersParameter>();
         }
     }
 }

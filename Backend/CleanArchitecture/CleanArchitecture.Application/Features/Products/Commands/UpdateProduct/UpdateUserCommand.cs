@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Core.Features.Users.Commands.UpdateProduct
 {
-    public class UpdateProductCommand : IRequest<Response<int>>
+    public class UpdateUserCommand : IRequest<Response<int>>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -15,14 +15,14 @@ namespace CleanArchitecture.Core.Features.Users.Commands.UpdateProduct
         public string Barcode { get; set; }
         public string Description { get; set; }
         public decimal Rate { get; set; }
-        public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Response<int>>
+        public class UpdateProductCommandHandler : IRequestHandler<UpdateUserCommand, Response<int>>
         {
             private readonly IUserRepositoryAsync _productRepository;
             public UpdateProductCommandHandler(IUserRepositoryAsync productRepository)
             {
                 _productRepository = productRepository;
             }
-            public async Task<Response<int>> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
+            public async Task<Response<int>> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
             {
                 var product = await _productRepository.GetByIdAsync(command.Id);
 

@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Core.Features.Users.Queries.GetAllProducts
 {
-    public class GetAllProductsParameter : RequestParameter
+    public class GetAllUsersParameter : RequestParameter
     {
 
     }

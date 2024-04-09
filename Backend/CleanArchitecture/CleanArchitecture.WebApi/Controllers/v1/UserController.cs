@@ -15,21 +15,21 @@ using System.Threading.Tasks;
 namespace CleanArchitecture.WebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
-    public class ProductController : BaseApiController
+    public class UserController : BaseApiController
     {
         // GET: api/<controller>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResponse<IEnumerable<GetAllProductsViewModel>>))]
-        public async Task<PagedResponse<IEnumerable<GetAllProductsViewModel>>> Get([FromQuery] GetAllProductsParameter filter)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResponse<IEnumerable<GetAllUsersViewModel>>))]
+        public async Task<PagedResponse<IEnumerable<GetAllUsersViewModel>>> Get([FromQuery] GetAllUsersParameter filter)
         {
-            return await Mediator.Send(new GetAllProductsQuery() { PageSize = filter.PageSize, PageNumber = filter.PageNumber });
+            return await Mediator.Send(new GetAllUsersQuery() { PageSize = filter.PageSize, PageNumber = filter.PageNumber });
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            return Ok(await Mediator.Send(new GetProductByIdQuery { Id = id }));
+            return Ok(await Mediator.Send(new GetUserByIdQuery { Id = id }));
         }
 
         // POST api/<controller>
@@ -43,7 +43,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
         // PUT api/<controller>/5
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Put(int id, UpdateProductCommand command)
+        public async Task<IActionResult> Put(int id, UpdateUserCommand command)
         {
             if (id != command.Id)
             {
