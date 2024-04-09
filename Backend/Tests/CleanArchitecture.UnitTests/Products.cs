@@ -8,7 +8,7 @@ using CleanArchitecture.Core.Features.Users.Commands.UpdateProduct;
 using CleanArchitecture.Core.Interfaces.Repositories;
 using Moq;
 using static CleanArchitecture.Core.Features.Users.Commands.DeleteProductById.DeleteUserByIdCommand;
-using static CleanArchitecture.Core.Features.Users.Commands.UpdateProduct.UpdateProductCommand;
+using static CleanArchitecture.Core.Features.Users.Commands.UpdateProduct.UpdateUserCommand;
 
 namespace CleanArchitecture.UnitTests
 {
@@ -33,7 +33,7 @@ namespace CleanArchitecture.UnitTests
 
             var updateProductCommandHandler = new UpdateProductCommandHandler(productRepositoryAsync.Object);
 
-            var command = this.fixture.Create<UpdateProductCommand>();
+            var command = this.fixture.Create<UpdateUserCommand>();
             var cancellationToken = this.fixture.Create<CancellationToken>();
 
             Assert.ThrowsAsync<EntityNotFoundException>(() => updateProductCommandHandler.Handle(command, cancellationToken));
@@ -52,7 +52,7 @@ namespace CleanArchitecture.UnitTests
 
             var updateProductCommandHandler = new UpdateProductCommandHandler(this.productRepositoryAsync.Object);
 
-            var command = this.fixture.Create<UpdateProductCommand>();
+            var command = this.fixture.Create<UpdateUserCommand>();
             var cancellationToken = this.fixture.Create<CancellationToken>();
 
             Assert.ThrowsAsync<BarcodeIsNotUniqueException>(() => updateProductCommandHandler.Handle(command, cancellationToken));
@@ -62,7 +62,7 @@ namespace CleanArchitecture.UnitTests
         public async Task When_UpdateProductCommandHandlerInvoked_ShouldReturnProductId()
         {
             User product = this.fixture.Create<User>();
-            this.fixture.Customize<UpdateProductCommand>(c => c.With(x => x.Id, product.Id));
+            this.fixture.Customize<UpdateUserCommand>(c => c.With(x => x.Id, product.Id));
 
             this.productRepositoryAsync
               .Setup(pr => pr.GetByIdAsync(It.IsAny<int>()))
@@ -74,7 +74,7 @@ namespace CleanArchitecture.UnitTests
 
             var updateProductCommandHandler = new UpdateProductCommandHandler(this.productRepositoryAsync.Object);
 
-            var command = this.fixture.Create<UpdateProductCommand>();
+            var command = this.fixture.Create<UpdateUserCommand>();
 
             var cancellationToken = this.fixture.Create<CancellationToken>();
 
