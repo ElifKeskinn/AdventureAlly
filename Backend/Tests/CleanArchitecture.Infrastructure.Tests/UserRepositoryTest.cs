@@ -8,19 +8,19 @@ using Moq;
 
 namespace CleanArchitecture.Infrastructure.Tests
 {
-    public class ProductRepositoryTest
+    public class UserRepositoryTest
     {
         private readonly Fixture _fixture;
         private readonly Mock<IDateTimeService> _dateTimeService;
         private readonly Mock<IAuthenticatedUserService> _authenticatedUserService;
-        private readonly User existingProduct;
+        private readonly User existingUser;
         private readonly ApplicationDbContext context;
 
 
-        public ProductRepositoryTest() {
+        public UserRepositoryTest() {
 
             this._fixture = new Fixture();
-            this.existingProduct = _fixture.Create<User>();
+            this.existingUser = _fixture.Create<User>();
             _dateTimeService = new Mock<IDateTimeService>();
             _authenticatedUserService = new Mock<IAuthenticatedUserService>();  
 
@@ -29,7 +29,7 @@ namespace CleanArchitecture.Infrastructure.Tests
 
             context = new ApplicationDbContext(optionsBuilder.Options, _dateTimeService.Object, _authenticatedUserService.Object);
 
-            context.Products.Add(existingProduct);
+            context.Users.Add(existingUser);
             context.SaveChanges();
         }
 
@@ -37,9 +37,9 @@ namespace CleanArchitecture.Infrastructure.Tests
         [Fact]
         public void When_IsUniqueBarcodeAsyncCalledWithExistingBarcode_ShouldReturnFalse()
         {
-            var repository = new ProductRepositoryAsync(context);
+            var repository = new UserRepositoryAsync(context);
 
-            var result = repository.IsUniqueBarcodeAsync(existingProduct.Barcode).Result;
+            var result = repository.IsUniqueBarcodeAsync(existingUser.Barcode).Result;
             Assert.False(result);
         }
 
@@ -47,7 +47,7 @@ namespace CleanArchitecture.Infrastructure.Tests
         [Fact]
         public void When_IsUniqueBarcodeAsyncCalledWithNotExistingBarcode_ShouldReturnTrue()
         {
-            var repository = new ProductRepositoryAsync(context);
+            var repository = new UserRepositoryAsync(context);
 
             var result = repository.IsUniqueBarcodeAsync(_fixture.Create<string>()).Result;
             Assert.True(result);

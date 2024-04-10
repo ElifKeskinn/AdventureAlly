@@ -1,8 +1,8 @@
-﻿using CleanArchitecture.Core.Features.Users.Commands.CreateProduct;
-using CleanArchitecture.Core.Features.Users.Commands.DeleteProductById;
-using CleanArchitecture.Core.Features.Users.Commands.UpdateProduct;
-using CleanArchitecture.Core.Features.Users.Queries.GetAllProducts;
-using CleanArchitecture.Core.Features.Users.Queries.GetProductById;
+﻿using CleanArchitecture.Core.Features.Users.Commands.CreateUser;
+using CleanArchitecture.Core.Features.Users.Commands.DeleteUserById;
+using CleanArchitecture.Core.Features.Users.Commands.UpdateUser;
+using CleanArchitecture.Core.Features.Users.Queries.GetAllUsers;
+using CleanArchitecture.Core.Features.Users.Queries.GetUserById;
 using CleanArchitecture.Core.Wrappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

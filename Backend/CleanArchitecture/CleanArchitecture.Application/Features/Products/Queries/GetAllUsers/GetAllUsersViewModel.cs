@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Core.Features.Users.Queries.GetAllProducts
+﻿namespace CleanArchitecture.Core.Features.Users.Queries.GetAllUsers
 {
     public class GetAllUsersViewModel
     {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Features.Users.Commands.CreateProduct;
-using CleanArchitecture.Core.Features.Users.Queries.GetAllProducts;
+using CleanArchitecture.Core.Features.Users.Commands.CreateUser;
+using CleanArchitecture.Core.Features.Users.Queries.GetAllUsers;
 
 namespace CleanArchitecture.Core.Mappings
 {

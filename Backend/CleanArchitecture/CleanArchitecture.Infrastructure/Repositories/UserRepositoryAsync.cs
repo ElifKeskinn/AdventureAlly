@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Repositories
 {
-    public class ProductRepositoryAsync : GenericRepositoryAsync<User>, IUserRepositoryAsync
+    public class UserRepositoryAsync : GenericRepositoryAsync<User>, IUserRepositoryAsync
     {
-        private readonly DbSet<User> _products;
+        private readonly DbSet<User> _userss;
 
-        public ProductRepositoryAsync(ApplicationDbContext dbContext) : base(dbContext)
+        public UserRepositoryAsync(ApplicationDbContext dbContext) : base(dbContext)
         {
-            _products = dbContext.Set<User>();
+            _userss = dbContext.Set<User>();
         }
 
         public Task<bool> IsUniqueBarcodeAsync(string barcode)
         {
-            return _products
+            return _userss
                 .AllAsync(p => p.Barcode != barcode);
         }
     }

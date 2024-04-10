@@ -3,7 +3,7 @@ using FluentValidation;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Core.Features.Users.Commands.CreateProduct
+namespace CleanArchitecture.Core.Features.Users.Commands.CreateUser
 {
     public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     {

@@ -5,7 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Core.Features.Users.Commands.DeleteProductById
+namespace CleanArchitecture.Core.Features.Users.Commands.DeleteUserById
 {
     public class DeleteUserByIdCommand : IRequest<Response<int>>
     {
@@ -13,9 +13,9 @@ namespace CleanArchitecture.Core.Features.Users.Commands.DeleteProductById
         public class DeleteUserByIdCommandHandler : IRequestHandler<DeleteUserByIdCommand, Response<int>>
         {
             private readonly IUserRepositoryAsync _userRepository;
-            public DeleteUserByIdCommandHandler(IUserRepositoryAsync productRepository)
+            public DeleteUserByIdCommandHandler(IUserRepositoryAsync userRepository)
             {
-                _userRepository = productRepository;
+                _userRepository = userRepository;
             }
             public async Task<Response<int>> Handle(DeleteUserByIdCommand command, CancellationToken cancellationToken)
             {
