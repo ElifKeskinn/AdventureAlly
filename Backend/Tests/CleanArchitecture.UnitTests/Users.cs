@@ -93,9 +93,10 @@ namespace CleanArchitecture.UnitTests
          User user = this.fixture.Create<User>();
             this.fixture.Customize<DeleteUserByIdCommand>(c => c.With(x => x.Id, user.Id));
 
-              this.userRepositoryAsync
-              .Setup(pr => pr.GetByIdAsync(It.IsAny<int>()))
-              .When_DeleteUserByIdCommandInvoked_ShouldDeleteUserReturnUserID(User);
+            this.userRepositoryAsync
+             .Setup(pr => pr.GetByIdAsync(It.IsAny<int>()))
+             .ReturnsAsync(user);
+
 
             this.userRepositoryAsync
             .Setup(pr => pr.IsUniqueBarcodeAsync(It.IsAny<string>()))
