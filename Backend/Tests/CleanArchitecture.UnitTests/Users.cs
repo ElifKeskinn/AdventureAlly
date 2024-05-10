@@ -110,7 +110,7 @@ namespace CleanArchitecture.UnitTests
         var result = await deleteUserCommandHandler.Handle(command, cancellationToken);
 
         Assert.NotNull(result);
-            Assert.Equal(Command.Id, Result.Data);
+            Assert.Equal(command.Id, result.Data);
 }
 
 
