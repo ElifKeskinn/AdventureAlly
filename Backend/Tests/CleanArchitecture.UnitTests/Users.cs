@@ -88,18 +88,18 @@ namespace CleanArchitecture.UnitTests
         }
 
         [Fact]
-        public class When_DeleteUserByIdCommandInvoked_ShouldDeleteUserReturnUserID()
+        public async Task When_DeleteUserByIdCommandInvoked_ShouldDeleteUserReturnUserID()
         {
          User user = this.fixture.Create<User>();
             this.fixture.Customize<DeleteUserByIdCommand>(c => c.With(x => x.Id, user.Id));
 
-            this.userRepositoryAsync
+          /*  this.userRepositoryAsync
               .Setup(pr => pr.GetByIdAsync(It.IsAny<int>()))
-              .When_DeleteUserByIdCommandInvoked_ShouldDeleteUserReturnUserID(User);
+              .When_DeleteUserByIdCommandInvoked_ShouldDeleteUserReturnUserID(User);*/
 
-            /*this.userRepositoryAsync
+            this.userRepositoryAsync
             .Setup(pr => pr.IsUniqueBarcodeAsync(It.IsAny<string>()))
-            .ReturnsAsync(true);*/
+            .ReturnsAsync(true);
 
         var deleteUserCommandHandler = new DeleteUserByIdCommandHandler(this.userRepositoryAsync.Object);
 
