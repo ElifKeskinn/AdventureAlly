@@ -13,12 +13,17 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
+using System.Net.Http;
 
 var builder = WebApplication.CreateBuilder(args);
+var weatherApiKey = "38f9fbea711c5c8c97baceec7c5b356c";
+
 
 //Add configurations
 builder.Configuration.AddJsonFile("appsettings.json");
 builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true);
+builder.Services.AddScoped<GoogleMapsService>();
+
 
 // Add services to the container.
 builder.Services.AddApplicationLayer();
@@ -28,7 +33,9 @@ builder.Services.AddControllers();
 builder.Services.AddApiVersioningExtension();
 builder.Services.AddHealthChecks();
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
-
+builder.Services.AddHttpClient<GoogleMapsService>(); 
+builder.Services.AddScoped<WeatherService>(serviceProvider =>
+    new WeatherService(serviceProvider.GetRequiredService<IHttpClientFactory>(), weatherApiKey));
 //Build the application
 var app = builder.Build();
 

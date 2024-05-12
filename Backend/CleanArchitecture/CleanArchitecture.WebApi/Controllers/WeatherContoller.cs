@@ -1,6 +1,6 @@
+using CleanArchitecture.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 
@@ -10,36 +10,25 @@ namespace CleanArchitecture.WebApi.Controllers
     [ApiController]
     public class WeatherController : ControllerBase
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public WeatherController(IHttpClientFactory httpClientFactory)
+        private readonly WeatherService _weatherService;
+        private readonly string _apiKey;
+        public WeatherController(WeatherService weatherService, string apiKey)
         {
-            _httpClientFactory = httpClientFactory;
+            _weatherService = weatherService;
+            _apiKey = apiKey;
         }
 
         [HttpGet("forecast")]
-        public async Task<IActionResult> GetWeatherForecastAsync(double latitude, double longitude, string apiKey)
+        public async Task<IActionResult> GetWeatherForecastAsync(double latitude, double longitude)
         {
             try
             {
-                var client = _httpClientFactory.CreateClient();
-
-                var response = await client.GetAsync($"https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={apiKey}");
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    return Ok(content);
-                }
-                else
-                {
-                    return StatusCode((int)response.StatusCode, "Failed to get weather data.");
-                }
+                var weatherData = await _weatherService.GetWeatherAsync(latitude, longitude);
+                return Ok(weatherData);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"An error occurred while retrieving weather data: {ex.Message}");
             }
         }
-    }
-}
+    }}
