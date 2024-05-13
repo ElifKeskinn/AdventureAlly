@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Core.Entities;
+﻿using CleanArchitecture.Core.DTOs.User;
+using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Interfaces.Repositories;
 using CleanArchitecture.Infrastructure.Contexts;
 using CleanArchitecture.Infrastructure.Repository;
@@ -20,6 +21,11 @@ namespace CleanArchitecture.Infrastructure.Repositories
         {
             return _userss
                 .AllAsync(p => p.Barcode != barcode);
+        }
+
+        public Task<UserProfile> UpdateUserProfile(UserProfileUpdateRequest request)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

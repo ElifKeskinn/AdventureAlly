@@ -2,6 +2,7 @@ using CleanArchitecture.Core;
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Infrastructure.Models;
+using CleanArchitecture.WebApi.Controllers;
 using CleanArchitecture.WebApi.Extensions;
 using CleanArchitecture.WebApi.Services;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +33,8 @@ builder.Services.AddSwaggerExtension();
 builder.Services.AddControllers();
 builder.Services.AddApiVersioningExtension();
 builder.Services.AddHealthChecks();
+builder.Services.AddScoped<IUpdateUserService, UpdateUserService>();
+builder.Services.AddScoped<UpdateUserController>();
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 builder.Services.AddHttpClient<GoogleMapsService>(); 
 builder.Services.AddScoped<WeatherService>(serviceProvider =>
