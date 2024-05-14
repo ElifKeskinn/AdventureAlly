@@ -4,7 +4,7 @@ namespace CleanArchitecture.Core.Entities
 {
     public class UserPreferences
     {
-        public List<string> Interests { get; set; }
+        public HashSet<string> Interests { get; set; }
         public string PreferredLanguage { get; set; }
         public string Place { get; set; }
         public List<string> FavoritePlaces { get; set; }

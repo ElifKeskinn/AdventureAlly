@@ -32,7 +32,7 @@ namespace CleanArchitecture.Core.Features.Users.Commands.UpdateUser
 
                 var isUniqueEmail = await _userRepository.IsUniqueEmailAsync(command.Email);
 
-                if(!isUniqueEmail) throw new EmailIsNotUniqueException(command.Email);
+                if (!isUniqueEmail) throw new EmailIsNotUniqueException(command.Email);
 
                 /*
                  public string Name { get; set; }
@@ -42,12 +42,12 @@ public string PreferredLanguage { get; set; }
 public string Email { get; set; }
 public string Phone { get; set; }*/
                 user.Name = command.Name;
-                user.Email = command.Email; 
+                user.Email = command.Email;
                 user.Phone = command.Phone;
                 user.Place = command.Place;
                 user.Interests = command.Interests;
                 user.PreferredLanguage = command.PreferredLanguage;
-     
+
                 await _userRepository.UpdateAsync(user);
                 return new Response<int>(user.Id);
             }

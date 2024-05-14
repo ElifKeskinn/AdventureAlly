@@ -16,7 +16,7 @@ namespace CleanArchitecture.WebApi.Services
         public GoogleMapsService(HttpClient httpClient)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            _apiKey = "AIzaSyC3HtB9t90I8RiOmNUJhNAZ2D__-RM-X-U"; 
+            _apiKey = "AIzaSyC3HtB9t90I8RiOmNUJhNAZ2D__-RM-X-U";
         }
 
         public async Task<Coordinate> GetCoordinatesAsync(string address)

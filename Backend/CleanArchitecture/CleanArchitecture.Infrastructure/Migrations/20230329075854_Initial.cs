@@ -60,7 +60,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     LastModified = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Location = table.Column<string>(nullable: true),
-                    Interests = table.Column<string>(nullable: true), 
+                    Interests = table.Column<string>(nullable: true),
                     PreferredLanguage = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: true),

@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CleanArchitecture.Core.DTOs.Account;
 
 namespace CleanArchitecture.Infrastructure.Contexts
 {
@@ -23,8 +22,6 @@ namespace CleanArchitecture.Infrastructure.Contexts
             _authenticatedUser = authenticatedUser;
         }
         public DbSet<User> Users { get; set; }
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
-
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
@@ -50,7 +47,6 @@ namespace CleanArchitecture.Infrastructure.Contexts
             builder.Entity<ApplicationUser>(entity =>
             {
                 entity.ToTable(name: "User");
-                entity.HasKey(entity => entity.Id);
             });
 
             builder.Entity<IdentityRole>(entity =>
@@ -61,9 +57,6 @@ namespace CleanArchitecture.Infrastructure.Contexts
             {
                 entity.ToTable("UserRoles");
             });
-
-        
-
 
             builder.Entity<IdentityUserClaim<string>>(entity =>
             {
