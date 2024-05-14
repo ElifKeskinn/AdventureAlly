@@ -49,12 +49,10 @@ namespace Infrastructure.Tests.Services
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             var mockHttpClient = new Mock<HttpClient>();
             mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(mockHttpClient.Object);
-            mockHttpClient.SetupSequence(client => client.GetAsync(It.IsAny<string>(), CancellationToken.None))
-                .ThrowsAsync(new Exception("Failed to get weather data."))
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) // Durum kodu burada belirtilmeli
-                {
-                    Content = new StringContent("{ 'temperature': 25, 'condition': 'Sunny' }")
-                });
+            mockHttpClient.Setup(client => client.GetAsync(It.IsAny<string>(), CancellationToken.None))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError)); // Durum kodu burada belirtilmeli
+                
+                
 
 
             var service = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");

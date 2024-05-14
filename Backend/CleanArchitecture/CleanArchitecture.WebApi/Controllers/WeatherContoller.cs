@@ -15,7 +15,7 @@ namespace CleanArchitecture.WebApi.Controllers
         public WeatherController(WeatherService weatherService, string apiKey)
         {
             _weatherService = weatherService;
-            _apiKey = apiKey;
+            _apiKey = "38f9fbea711c5c8c97baceec7c5b356c";
         }
 
         [HttpGet("forecast")]

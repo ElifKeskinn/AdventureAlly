@@ -31,8 +31,8 @@ namespace CleanArchitecture.UnitTests.Controllers
                     Content = new StringContent(expectedWeatherData)
                 });
 
-            var weatherService = new WeatherService(mockHttpClientFactory.Object, "dummy-api-key");
-            var weatherController = new WeatherController(weatherService, "dummy-api-key");
+            var weatherService = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");
+            var weatherController = new WeatherController(weatherService, "38f9fbea711c5c8c97baceec7c5b356c");
 
             // Act
             var result = await weatherController.GetWeatherForecastAsync(latitude, longitude) as OkObjectResult;
@@ -55,11 +55,9 @@ namespace CleanArchitecture.UnitTests.Controllers
             var mockHttpClient = new Mock<HttpClient>();
             mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(mockHttpClient.Object);
             mockHttpClient.Setup(client => client.GetAsync(It.IsAny<string>(), CancellationToken.None))
-                .ThrowsAsync(new Exception(expectedErrorMessage));
-
-            var mockWeatherService = new Mock<WeatherService>(MockBehavior.Strict, null, null);
-            mockWeatherService.Setup(service => service.GetWeatherAsync(latitude, longitude))
-                .ThrowsAsync(new Exception(expectedErrorMessage));
+           .ThrowsAsync(new Exception(expectedErrorMessage));
+            
+               
 
             var weatherService = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");
             var weatherController = new WeatherController(weatherService, "38f9fbea711c5c8c97baceec7c5b356c");
