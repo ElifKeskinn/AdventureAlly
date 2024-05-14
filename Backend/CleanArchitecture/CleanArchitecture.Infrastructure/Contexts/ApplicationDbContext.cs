@@ -50,6 +50,7 @@ namespace CleanArchitecture.Infrastructure.Contexts
             builder.Entity<ApplicationUser>(entity =>
             {
                 entity.ToTable(name: "User");
+                entity.HasKey(entity => entity.Id);
             });
 
             builder.Entity<IdentityRole>(entity =>
@@ -60,6 +61,9 @@ namespace CleanArchitecture.Infrastructure.Contexts
             {
                 entity.ToTable("UserRoles");
             });
+
+        
+
 
             builder.Entity<IdentityUserClaim<string>>(entity =>
             {
