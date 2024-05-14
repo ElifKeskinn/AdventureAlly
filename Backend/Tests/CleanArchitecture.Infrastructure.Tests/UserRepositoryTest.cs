@@ -36,21 +36,21 @@ namespace CleanArchitecture.Infrastructure.Tests
 
 
         [Fact]
-        public async Task When_IsUniqueEmailAsyncCalledWithExistingEmail_ShouldReturnFalseAsync()
+        public void When_IsUniqueEmailAsyncCalledWithExistingEmail_ShouldReturnFalseAsync()
         {
             var repository = new UserRepositoryAsync(context);
 
-            var result = await repository.IsUniqueEmailAsync(existingUser.Email);
+            var result = repository.IsUniqueEmailAsync(existingUser.Email).Result;
             Assert.False(result);
         }
 
 
         [Fact]
-        public async Task When_IsUniqueEmailAsyncCalledWithNotExistingEmail_ShouldReturnTrueAsync()
+        public void When_IsUniqueEmailAsyncCalledWithNotExistingEmail_ShouldReturnTrueAsync()
         {
             var repository = new UserRepositoryAsync(context);
 
-            var result = await repository.IsUniqueEmailAsync(_fixture.Create<string>());
+            var result =  repository.IsUniqueEmailAsync(_fixture.Create<string>()).Result;
             Assert.True(result);
         }
     }

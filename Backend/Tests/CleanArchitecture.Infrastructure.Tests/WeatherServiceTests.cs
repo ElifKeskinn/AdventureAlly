@@ -40,7 +40,7 @@ namespace Infrastructure.Tests.Services
         }
 
         [Fact]
-        public void GetWeatherAsync_Throws_Exception_On_Failure()
+        public async Task GetWeatherAsync_Throws_Exception_On_Failure()
         {
             // Arrange
             double latitude = 40.7128; // New York
@@ -60,7 +60,7 @@ namespace Infrastructure.Tests.Services
             var service = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");
 
             // Assert
-            Assert.ThrowsAsync<Exception>(async () => await service.GetWeatherAsync(latitude, longitude));
+            await Assert.ThrowsAsync<Exception>(async () => await service.GetWeatherAsync(latitude, longitude));
         }
     }
 }

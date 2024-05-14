@@ -1,24 +1,13 @@
 using CleanArchitecture.WebApi.Controllers;
 using CleanArchitecture.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Moq;
-using System;
 using System.Net;
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoFixture;
-using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Exceptions;
-using CleanArchitecture.Core.Features.Users.Commands.DeleteUserById;
-using CleanArchitecture.Core.Features.Users.Commands.UpdateUser;
-using CleanArchitecture.Core.Interfaces.Repositories;
-using Moq;
-using MySqlX.XDevAPI.Common;
-using static CleanArchitecture.Core.Features.Users.Commands.DeleteUserById.DeleteUserByIdCommand;
-using static CleanArchitecture.Core.Features.Users.Commands.UpdateUser.UpdateUserCommand;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Xunit;
 
 namespace CleanArchitecture.UnitTests.Controllers
 {
@@ -62,11 +51,18 @@ namespace CleanArchitecture.UnitTests.Controllers
             double longitude = -74.0060;
             var expectedErrorMessage = "An error occurred while retrieving weather data.";
 
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            var mockHttpClient = new Mock<HttpClient>();
+            mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(mockHttpClient.Object);
+            mockHttpClient.Setup(client => client.GetAsync(It.IsAny<string>(), CancellationToken.None))
+                .ThrowsAsync(new Exception(expectedErrorMessage));
+
             var mockWeatherService = new Mock<WeatherService>(MockBehavior.Strict, null, null);
             mockWeatherService.Setup(service => service.GetWeatherAsync(latitude, longitude))
                 .ThrowsAsync(new Exception(expectedErrorMessage));
 
-            var weatherController = new WeatherController(mockWeatherService.Object, "dummy-api-key");
+            var weatherService = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");
+            var weatherController = new WeatherController(weatherService, "38f9fbea711c5c8c97baceec7c5b356c");
 
             // Act
             var result = await weatherController.GetWeatherForecastAsync(latitude, longitude) as ObjectResult;

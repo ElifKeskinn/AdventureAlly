@@ -1,6 +1,6 @@
 using CleanArchitecture.WebApi.Services;
 using Moq;
-
+using Xunit;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -38,10 +38,7 @@ namespace Infrastructure.Tests.Services
                         {
                             Geometry = new Geometry
                             {
-                                 Location = new Coordinate
-                                 {
-                                      Latitude = expectedCoordinates.Latitude, Longitude = expectedCoordinates.Longitude
-                                 } // Location yerine Coordinate kullanýlýyor
+                                 Location = expectedCoordinates
        
                             }
                         }
