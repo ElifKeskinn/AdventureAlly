@@ -5,6 +5,7 @@ using CleanArchitecture.Infrastructure.Contexts;
 using CleanArchitecture.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using Xunit;
 
 namespace CleanArchitecture.Infrastructure.Tests
 {
@@ -35,21 +36,21 @@ namespace CleanArchitecture.Infrastructure.Tests
 
 
         [Fact]
-        public void When_IsUniqueEmailAsyncCalledWithExistingEmail_ShouldReturnFalse()
+        public async Task When_IsUniqueEmailAsyncCalledWithExistingEmail_ShouldReturnFalseAsync()
         {
             var repository = new UserRepositoryAsync(context);
 
-            var result = repository.IsUniqueEmailAsync(existingUser.Email).Result;
+            var result = await repository.IsUniqueEmailAsync(existingUser.Email);
             Assert.False(result);
         }
 
 
         [Fact]
-        public void When_IsUniqueEmailAsyncCalledWithNotExistingEmail_ShouldReturnTrue()
+        public async Task When_IsUniqueEmailAsyncCalledWithNotExistingEmail_ShouldReturnTrueAsync()
         {
             var repository = new UserRepositoryAsync(context);
 
-            var result = repository.IsUniqueEmailAsync(_fixture.Create<string>()).Result;
+            var result = await repository.IsUniqueEmailAsync(_fixture.Create<string>());
             Assert.True(result);
         }
     }

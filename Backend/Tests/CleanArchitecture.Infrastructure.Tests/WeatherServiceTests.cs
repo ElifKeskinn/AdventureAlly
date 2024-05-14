@@ -30,7 +30,7 @@ namespace Infrastructure.Tests.Services
                     Content = new StringContent(expectedWeatherData)
                 });
 
-            var service = new WeatherService(mockHttpClientFactory.Object, "dummy-api-key");
+            var service = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");
 
             // Act
             var result = await service.GetWeatherAsync(latitude, longitude);
@@ -49,10 +49,15 @@ namespace Infrastructure.Tests.Services
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             var mockHttpClient = new Mock<HttpClient>();
             mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(mockHttpClient.Object);
-            mockHttpClient.Setup(client => client.GetAsync(It.IsAny<string>(), CancellationToken.None))
-                .ThrowsAsync(new Exception("Failed to get weather data."));
+            mockHttpClient.SetupSequence(client => client.GetAsync(It.IsAny<string>(), CancellationToken.None))
+                .ThrowsAsync(new Exception("Failed to get weather data."))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) // Durum kodu burada belirtilmeli
+                {
+                    Content = new StringContent("{ 'temperature': 25, 'condition': 'Sunny' }")
+                });
 
-            var service = new WeatherService(mockHttpClientFactory.Object, "dummy-api-key");
+
+            var service = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");
 
             // Assert
             Assert.ThrowsAsync<Exception>(async () => await service.GetWeatherAsync(latitude, longitude));

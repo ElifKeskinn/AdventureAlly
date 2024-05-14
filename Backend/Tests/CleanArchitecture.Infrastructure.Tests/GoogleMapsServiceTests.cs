@@ -38,11 +38,11 @@ namespace Infrastructure.Tests.Services
                         {
                             Geometry = new Geometry
                             {
-                                 Location = new Coordinate // Location yerine Coordinate kullanýlýyor
-        {
-            Latitude = expectedCoordinates.Latitude,
-            Longitude = expectedCoordinates.Longitude
-        }
+                                 Location = new Coordinate
+                                 {
+                                      Latitude = expectedCoordinates.Latitude, Longitude = expectedCoordinates.Longitude
+                                 } // Location yerine Coordinate kullanýlýyor
+       
                             }
                         }
                     }
