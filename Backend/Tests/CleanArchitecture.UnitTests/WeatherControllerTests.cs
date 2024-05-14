@@ -2,8 +2,8 @@ using CleanArchitecture.WebApi.Controllers;
 using CleanArchitecture.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Moq.Protected;
 using System.Net;
-using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,15 +21,18 @@ namespace CleanArchitecture.UnitTests.Controllers
             double longitude = -74.0060;
             var expectedWeatherData = "{ 'temperature': 25, 'condition': 'Sunny' }"; // Example weather data
 
-            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            var mockHttpClient = new Mock<HttpClient>();
-            mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(mockHttpClient.Object);
-            mockHttpClient.Setup(client => client.GetAsync(It.IsAny<string>(), CancellationToken.None))
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent(expectedWeatherData)
                 });
+
+            var httpClient = new HttpClient(mockHttpMessageHandler.Object);
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
             var weatherService = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");
             var weatherController = new WeatherController(weatherService, "38f9fbea711c5c8c97baceec7c5b356c");
@@ -51,13 +54,14 @@ namespace CleanArchitecture.UnitTests.Controllers
             double longitude = -74.0060;
             var expectedErrorMessage = "An error occurred while retrieving weather data.";
 
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ThrowsAsync(new Exception(expectedErrorMessage));
+
+            var httpClient = new HttpClient(mockHttpMessageHandler.Object);
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            var mockHttpClient = new Mock<HttpClient>();
-            mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(mockHttpClient.Object);
-            mockHttpClient.Setup(client => client.GetAsync(It.IsAny<string>(), CancellationToken.None))
-           .ThrowsAsync(new Exception(expectedErrorMessage));
-            
-               
+            mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
             var weatherService = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");
             var weatherController = new WeatherController(weatherService, "38f9fbea711c5c8c97baceec7c5b356c");

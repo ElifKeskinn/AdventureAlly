@@ -23,10 +23,10 @@ namespace CleanArchitecture.Infrastructure.Tests
             this._fixture = new Fixture();
             this.existingUser = _fixture.Create<User>();
             _dateTimeService = new Mock<IDateTimeService>();
-            _authenticatedUserService = new Mock<IAuthenticatedUserService>();  
+            _authenticatedUserService = new Mock<IAuthenticatedUserService>();
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(_fixture.Create<string>());
+       .UseInMemoryDatabase("TestDatabase");
 
             context = new ApplicationDbContext(optionsBuilder.Options, _dateTimeService.Object, _authenticatedUserService.Object);
 

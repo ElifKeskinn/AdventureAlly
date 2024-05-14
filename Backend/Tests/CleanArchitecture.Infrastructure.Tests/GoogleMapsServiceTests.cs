@@ -9,12 +9,10 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Core.Models;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.CodeAnalysis;
+using Moq.Protected;
 
 namespace Infrastructure.Tests.Services
 {
-   
     public class GoogleMapsServiceTests
     {
         [Fact]
@@ -24,31 +22,29 @@ namespace Infrastructure.Tests.Services
             string address = "1600 Amphitheatre Parkway, Mountain View, CA"; // Örnek bir adres
             var expectedCoordinates = new Coordinate { Latitude = 37.4224082, Longitude = -122.0856086 }; // Örnek koordinatlar
 
-            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            var mockHttpClient = new Mock<HttpClient>();
-            mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(mockHttpClient.Object);
-
-            var httpResponse = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(JsonSerializer.Serialize(new GeocodeResponse
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
                 {
-                    Results = new[]
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(JsonSerializer.Serialize(new GeocodeResponse
                     {
-                        new GeocodeResult
+                        Results = new[]
                         {
-                            Geometry = new Geometry
+                            new GeocodeResult
                             {
-                                 Location = expectedCoordinates
-       
+                                Geometry = new Geometry
+                                {
+                                    Location = expectedCoordinates
+                                }
                             }
                         }
-                    }
-                }), Encoding.UTF8, "application/json")
-            };
-            mockHttpClient.Setup(client => client.GetAsync(It.IsAny<string>(), CancellationToken.None))
-                .ReturnsAsync(httpResponse);
+                    }))
+                });
 
-            var service = new GoogleMapsService((HttpClient)mockHttpClientFactory.Object);
+            var httpClient = new HttpClient(mockHttpMessageHandler.Object);
+            var service = new GoogleMapsService(httpClient);
 
             // Act
             var result = await service.GetCoordinatesAsync(address);
