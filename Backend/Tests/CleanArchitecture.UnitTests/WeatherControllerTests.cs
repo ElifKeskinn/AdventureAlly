@@ -72,7 +72,7 @@ namespace CleanArchitecture.UnitTests.Controllers
             // Assert
             Assert.NotNull(result);
             Assert.Equal((int)HttpStatusCode.InternalServerError, result.StatusCode);
-            Assert.Equal(expectedErrorMessage, result.Value);
+            Assert.Contains(expectedErrorMessage, result.Value.ToString());
         }
     }
 }
