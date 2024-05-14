@@ -4,9 +4,9 @@ using System.Text;
 
 namespace CleanArchitecture.Core.Exceptions
 {
-    public class BarcodeIsNotUniqueException : Exception
+    public class EmailIsNotUniqueException : Exception
     {
-        public BarcodeIsNotUniqueException(string message) : base(message)
+        public EmailIsNotUniqueException(string message) : base(message)
         {
         }
     }

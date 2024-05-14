@@ -35,21 +35,21 @@ namespace CleanArchitecture.Infrastructure.Tests
 
 
         [Fact]
-        public void When_IsUniqueBarcodeAsyncCalledWithExistingBarcode_ShouldReturnFalse()
+        public void When_IsUniqueEmailAsyncCalledWithExistingEmail_ShouldReturnFalse()
         {
             var repository = new UserRepositoryAsync(context);
 
-            var result = repository.IsUniqueBarcodeAsync(existingUser.Barcode).Result;
+            var result = repository.IsUniqueEmailAsync(existingUser.Email).Result;
             Assert.False(result);
         }
 
 
         [Fact]
-        public void When_IsUniqueBarcodeAsyncCalledWithNotExistingBarcode_ShouldReturnTrue()
+        public void When_IsUniqueEmailAsyncCalledWithNotExistingEmail_ShouldReturnTrue()
         {
             var repository = new UserRepositoryAsync(context);
 
-            var result = repository.IsUniqueBarcodeAsync(_fixture.Create<string>()).Result;
+            var result = repository.IsUniqueEmailAsync(_fixture.Create<string>()).Result;
             Assert.True(result);
         }
     }

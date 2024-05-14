@@ -4,6 +4,7 @@ using CleanArchitecture.Core.Wrappers;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using System.Threading;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Core.Features.Users.Commands.CreateUser
@@ -11,9 +12,11 @@ namespace CleanArchitecture.Core.Features.Users.Commands.CreateUser
     public partial class CreateUserCommand : IRequest<Response<int>>
     {
         public string Name { get; set; }
-        public string Barcode { get; set; }
-        public string Description { get; set; }
-        public decimal Rate { get; set; }
+        public string Place { get; set; }
+        public List<string> Interests { get; set; }
+        public string PreferredLanguage { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
     }
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<int>>
     {

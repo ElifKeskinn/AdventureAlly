@@ -1,12 +1,14 @@
-﻿namespace CleanArchitecture.Core.Entities
+﻿using System.Collections.Generic;
+//Uygulamanın temel kullanıcılarını temsil eder. Turistlerin özelliklerini ve tercihlerini saklar.
+namespace CleanArchitecture.Core.Entities
 {
     public class User : AuditableBaseEntity
     {
         public string Name { get; set; }
-        public string Barcode { get; set; }
-        public string Description { get; set; }
-        public decimal Rate { get; set; }
-
-        //Database Modified
+        public string Place { get; set; }
+        public List<string> Interests { get; set; }
+        public string PreferredLanguage { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
     }
 }

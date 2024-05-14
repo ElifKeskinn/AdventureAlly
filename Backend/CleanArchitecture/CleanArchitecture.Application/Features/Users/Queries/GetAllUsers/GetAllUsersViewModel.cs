@@ -1,11 +1,13 @@
-﻿namespace CleanArchitecture.Core.Features.Users.Queries.GetAllUsers
+﻿using System.Collections.Generic;
+
+namespace CleanArchitecture.Core.Features.Users.Queries.GetAllUsers
 {
     public class GetAllUsersViewModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Barcode { get; set; }
-        public string Description { get; set; }
-        public decimal Rate { get; set; }
+    {        public string Name { get; set; }
+        public string Place { get; set; }
+        public List<string> Interests { get; set; }
+        public string PreferredLanguage { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
     }
 }

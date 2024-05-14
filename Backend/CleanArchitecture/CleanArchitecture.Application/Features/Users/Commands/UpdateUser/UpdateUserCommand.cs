@@ -2,6 +2,7 @@
 using CleanArchitecture.Core.Interfaces.Repositories;
 using CleanArchitecture.Core.Wrappers;
 using MediatR;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,10 +12,11 @@ namespace CleanArchitecture.Core.Features.Users.Commands.UpdateUser
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
-        public string Barcode { get; set; }
-        public string Description { get; set; }
-        public decimal Rate { get; set; }
+        public string Place { get; set; }
+        public List<string> Interests { get; set; }
+        public string PreferredLanguage { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
         public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Response<int>>
         {
             private readonly IUserRepositoryAsync _userRepository;
@@ -28,13 +30,24 @@ namespace CleanArchitecture.Core.Features.Users.Commands.UpdateUser
 
                 if (user == null) throw new EntityNotFoundException("user", command.Id);
 
-                var isUniqueBarcode = await _userRepository.IsUniqueBarcodeAsync(command.Barcode);
+                var isUniqueEmail = await _userRepository.IsUniqueEmailAsync(command.Email);
 
-                if(!isUniqueBarcode) throw new BarcodeIsNotUniqueException(command.Barcode);
+                if(!isUniqueEmail) throw new EmailIsNotUniqueException(command.Email);
 
+                /*
+                 public string Name { get; set; }
+public string Location { get; set; }
+public List<string> Interests { get; set; }
+public string PreferredLanguage { get; set; }
+public string Email { get; set; }
+public string Phone { get; set; }*/
                 user.Name = command.Name;
-                user.Rate = command.Rate;
-                user.Description = command.Description;
+                user.Email = command.Email; 
+                user.Phone = command.Phone;
+                user.Place = command.Place;
+                user.Interests = command.Interests;
+                user.PreferredLanguage = command.PreferredLanguage;
+     
                 await _userRepository.UpdateAsync(user);
                 return new Response<int>(user.Id);
             }

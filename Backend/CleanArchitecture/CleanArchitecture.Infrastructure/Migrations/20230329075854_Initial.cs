@@ -59,9 +59,11 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(nullable: true),
-                    Barcode = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Rate = table.Column<decimal>(type: "decimal(18,6)", nullable: false)
+                    Location = table.Column<string>(nullable: true),
+                    Interests = table.Column<string>(nullable: true), 
+                    PreferredLanguage = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {

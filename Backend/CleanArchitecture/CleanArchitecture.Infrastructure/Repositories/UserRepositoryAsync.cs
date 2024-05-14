@@ -17,10 +17,10 @@ namespace CleanArchitecture.Infrastructure.Repositories
             _userss = dbContext.Set<User>();
         }
 
-        public Task<bool> IsUniqueBarcodeAsync(string barcode)
+        public Task<bool> IsUniqueEmailAsync(string email)
         {
             return _userss
-                .AllAsync(p => p.Barcode != barcode);
+                .AllAsync(p => p.Email != email);
         }
 
         public Task<UserProfile> UpdateUserProfile(UserProfileUpdateRequest request)

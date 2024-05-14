@@ -37,12 +37,12 @@ namespace CleanArchitecture.WebApi.Services
                 {
                     throw new Exception("No coordinates found for the given address.");
                 }
-
                 var coordinates = new Coordinate
                 {
                     Latitude = result.Results[0].Geometry.Location.Latitude,
                     Longitude = result.Results[0].Geometry.Location.Longitude
                 };
+
 
                 return coordinates;
             }

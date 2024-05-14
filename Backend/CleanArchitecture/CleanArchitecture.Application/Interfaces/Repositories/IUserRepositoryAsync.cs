@@ -6,7 +6,7 @@ namespace CleanArchitecture.Core.Interfaces.Repositories
 {
     public interface IUserRepositoryAsync : IGenericRepositoryAsync<User>
     {
-        Task<bool> IsUniqueBarcodeAsync(string barcode);
+        Task<bool> IsUniqueEmailAsync(string email);
         Task<UserProfile> UpdateUserProfile(UserProfileUpdateRequest request);
     }
 }

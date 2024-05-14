@@ -42,14 +42,14 @@ namespace CleanArchitecture.UnitTests
         }
 
         [Fact]
-        public void When_UpdateUserCommandHandlerInvoked_WithNotUniqueBarcode_ShouldThrowBarcodeIsNotUniqueException()
+        public void When_UpdateUserCommandHandlerInvoked_WithNotUniqueEmail_ShouldThrowEmailIsNotUniqueException()
         {
             this.userRepositoryAsync
                 .Setup(pr => pr.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(this.fixture.Create<User>());
 
             this.userRepositoryAsync
-                .Setup(pr => pr.IsUniqueBarcodeAsync(It.IsAny<string>()))
+                .Setup(pr => pr.IsUniqueEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(false);
 
             var updateUserCommandHandler = new UpdateUserCommandHandler(this.userRepositoryAsync.Object);
@@ -57,7 +57,7 @@ namespace CleanArchitecture.UnitTests
             var command = this.fixture.Create<UpdateUserCommand>();
             var cancellationToken = this.fixture.Create<CancellationToken>();
 
-            Assert.ThrowsAsync<BarcodeIsNotUniqueException>(() => updateUserCommandHandler.Handle(command, cancellationToken));
+            Assert.ThrowsAsync<EmailIsNotUniqueException>(() => updateUserCommandHandler.Handle(command, cancellationToken));
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace CleanArchitecture.UnitTests
               .ReturnsAsync(user);
 
             this.userRepositoryAsync
-                .Setup(pr => pr.IsUniqueBarcodeAsync(It.IsAny<string>()))
+                .Setup(pr => pr.IsUniqueEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(true);
 
             var updateUserCommandHandler = new UpdateUserCommandHandler(this.userRepositoryAsync.Object);
@@ -99,7 +99,7 @@ namespace CleanArchitecture.UnitTests
 
 
             this.userRepositoryAsync
-            .Setup(pr => pr.IsUniqueBarcodeAsync(It.IsAny<string>()))
+            .Setup(pr => pr.IsUniqueEmailAsync(It.IsAny<string>()))
             .ReturnsAsync(true);
 
         var deleteUserCommandHandler = new DeleteUserByIdCommandHandler(this.userRepositoryAsync.Object);
