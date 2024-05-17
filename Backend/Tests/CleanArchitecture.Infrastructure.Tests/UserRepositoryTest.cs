@@ -21,6 +21,10 @@ namespace CleanArchitecture.Infrastructure.Tests
         public UserRepositoryTest() {
 
             this._fixture = new Fixture();
+            this._fixture = new Fixture();
+            this._fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
+            this._fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+
             this.existingUser = _fixture.Create<User>();
             _dateTimeService = new Mock<IDateTimeService>();
             _authenticatedUserService = new Mock<IAuthenticatedUserService>();

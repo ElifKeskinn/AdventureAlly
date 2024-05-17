@@ -21,8 +21,13 @@ namespace CleanArchitecture.UnitTests
 
         public Users()
         {
+
             fixture = new Fixture();
+            fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             userRepositoryAsync = new Mock<IUserRepositoryAsync>();
+
+
         }
 
 
