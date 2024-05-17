@@ -22,7 +22,7 @@ namespace CleanArchitecture.WebApi.Services
             try
             {
                 var client = _httpClientFactory.CreateClient();
-                var response = await client.GetAsync($"https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={_apiSettings.ApiKey}");
+var response = await client.GetAsync($"https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={_apiSettings.ApiKey}");
 
                 if (response.IsSuccessStatusCode)
                 {

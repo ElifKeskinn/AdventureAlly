@@ -1,5 +1,8 @@
+using CleanArchitecture.WebApi.Configuration;
 using CleanArchitecture.WebApi.Services;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
 using System;
@@ -20,6 +23,8 @@ namespace Infrastructure.Tests.Services
             double latitude = 40.7128; // New York
             double longitude = -74.0060;
             var expectedWeatherData = "{ 'temperature': 25, 'condition': 'Sunny' }"; // Example weather data
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            var apiKey = configuration.GetValue<string>("ApiSettings:ApiKey");
 
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             mockHttpMessageHandler.Protected()
@@ -33,8 +38,9 @@ namespace Infrastructure.Tests.Services
             var httpClient = new HttpClient(mockHttpMessageHandler.Object);
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(httpClient);
-
-            var service = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");
+            var mockOptions = new Mock<IOptions<ApiSettings>>();
+            mockOptions.Setup(x => x.Value).Returns(new ApiSettings { ApiKey = apiKey });
+            var service = new WeatherService(mockHttpClientFactory.Object, mockOptions.Object);
 
             // Act
             var result = await service.GetWeatherAsync(latitude, longitude);
@@ -49,7 +55,8 @@ namespace Infrastructure.Tests.Services
             // Arrange
             double latitude = 40.7128; // New York
             double longitude = -74.0060;
-
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            var weatherApiKey = configuration.GetValue<string>("ApiSettings:ApiKey");
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
@@ -57,11 +64,10 @@ namespace Infrastructure.Tests.Services
 
             var httpClient = new HttpClient(mockHttpMessageHandler.Object);
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(httpClient);
+            var mockOptions = new Mock<IOptions<ApiSettings>>();
+            mockOptions.Setup(x => x.Value).Returns(new ApiSettings { ApiKey = weatherApiKey });
 
-            var service = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");
-
-            // Assert
+            var service = new WeatherService(mockHttpClientFactory.Object, mockOptions.Object);            // Assert
             await Assert.ThrowsAsync<Exception>(async () => await service.GetWeatherAsync(latitude, longitude));
         }
     }
