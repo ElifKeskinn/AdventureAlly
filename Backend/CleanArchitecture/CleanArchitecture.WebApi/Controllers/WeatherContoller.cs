@@ -13,11 +13,11 @@ namespace CleanArchitecture.WebApi.Controllers
     public class WeatherController : ControllerBase
     {
         private readonly WeatherService _weatherService;
-        private readonly string _apiKey;
+        private readonly ApiSettings _apiSettings;
         public WeatherController(WeatherService weatherService, IOptions<ApiSettings> apiSettings)
         {
             _weatherService = weatherService;
-            _apiKey = apiSettings.Value.ApiKey;
+            _apiSettings = apiSettings.Value;
         }
 
         [HttpGet("forecast")]

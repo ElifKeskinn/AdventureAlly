@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Core.Models;
 using Moq.Protected;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Tests.Services
 {
@@ -44,7 +45,10 @@ namespace Infrastructure.Tests.Services
                 });
 
             var httpClient = new HttpClient(mockHttpMessageHandler.Object);
-            var service = new GoogleMapsService(httpClient);
+            var configuration = new ConfigurationBuilder()
+             .AddJsonFile("appsettings.json")
+             .Build();
+            var service = new GoogleMapsService(httpClient, configuration);
 
             // Act
             var result = await service.GetCoordinatesAsync(address);

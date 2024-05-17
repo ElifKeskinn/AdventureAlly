@@ -1,18 +1,20 @@
+using CleanArchitecture.WebApi.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.WebApi.Services
 {
-    public class WeatherService
+    public class WeatherService 
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly string _apiKey;
+        private readonly ApiSettings _apiSettings;
 
-        public WeatherService(IHttpClientFactory httpClientFactory, string apiKey)
+        public WeatherService(IHttpClientFactory httpClientFactory, IOptions<ApiSettings> apiSettings)
         {
             _httpClientFactory = httpClientFactory;
-            _apiKey = apiKey;
+            _apiSettings = apiSettings.Value;
         }
 
         public async Task<string> GetWeatherAsync(double latitude, double longitude)
@@ -20,7 +22,7 @@ namespace CleanArchitecture.WebApi.Services
             try
             {
                 var client = _httpClientFactory.CreateClient();
-                var response = await client.GetAsync($"https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={_apiKey}");
+                var response = await client.GetAsync($"https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={_apiSettings.ApiKey}");
 
                 if (response.IsSuccessStatusCode)
                 {

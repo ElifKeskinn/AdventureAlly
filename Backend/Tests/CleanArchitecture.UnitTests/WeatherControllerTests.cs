@@ -1,6 +1,9 @@
+using CleanArchitecture.WebApi.Configuration;
 using CleanArchitecture.WebApi.Controllers;
 using CleanArchitecture.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
 using System.Net;
@@ -13,6 +16,18 @@ namespace CleanArchitecture.UnitTests.Controllers
 {
     public class WeatherControllerTests
     {
+        private readonly IConfiguration _configuration;
+       
+
+        public WeatherControllerTests()
+        {
+            // Build configuration from appsettings.json
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            _configuration = builder.Build();
+        }
+
         [Fact]
         public async Task GetWeatherForecastAsync_Returns_OkObjectResult_With_WeatherData()
         {
@@ -34,8 +49,14 @@ namespace CleanArchitecture.UnitTests.Controllers
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
-            var weatherService = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");
-            var weatherController = new WeatherController(weatherService, "38f9fbea711c5c8c97baceec7c5b356c");
+            var apiSettings = _configuration.GetSection("ApiSettings").Get<ApiSettings>();
+            var options = Options.Create(apiSettings);
+
+
+            var weatherService = new WeatherService(mockHttpClientFactory.Object, options);
+            var weatherController = new WeatherController(weatherService, options);
+
+
 
             // Act
             var result = await weatherController.GetWeatherForecastAsync(latitude, longitude) as OkObjectResult;
@@ -63,8 +84,11 @@ namespace CleanArchitecture.UnitTests.Controllers
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
-            var weatherService = new WeatherService(mockHttpClientFactory.Object, "38f9fbea711c5c8c97baceec7c5b356c");
-            var weatherController = new WeatherController(weatherService, "38f9fbea711c5c8c97baceec7c5b356c");
+            var apiSettings = _configuration.GetSection("ApiSettings").Get<ApiSettings>();
+            var options = Options.Create(apiSettings);
+
+            var weatherService = new WeatherService(mockHttpClientFactory.Object, options);
+            var weatherController = new WeatherController(weatherService, options);
 
             // Act
             var result = await weatherController.GetWeatherForecastAsync(latitude, longitude) as ObjectResult;

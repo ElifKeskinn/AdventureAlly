@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Serilog;
 using System;
 using System.Net.Http;
@@ -44,7 +45,10 @@ var configuration = builder.Configuration;
 var weatherApiKey = configuration.GetValue<string>("ApiSettings:ApiKey");
 
 builder.Services.AddScoped<WeatherService>(serviceProvider =>
-    new WeatherService(serviceProvider.GetRequiredService<IHttpClientFactory>(), weatherApiKey));
+{
+    var apiSettings = serviceProvider.GetRequiredService<IOptions<ApiSettings>>();
+    return new WeatherService(serviceProvider.GetRequiredService<IHttpClientFactory>(), apiSettings);
+});
 
 //Build the application
 var app = builder.Build();
