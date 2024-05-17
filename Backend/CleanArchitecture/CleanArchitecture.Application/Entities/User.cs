@@ -4,11 +4,13 @@ namespace CleanArchitecture.Core.Entities
 {
     public class User : AuditableBaseEntity
     {
+        public UserPreferences UserPreferences { get; set; }
         public string Name { get; set; }
         public string Place { get; set; }
-        public List<string> Interests { get; set; }
+        public List<Interests> Interests { get; set; }
         public string PreferredLanguage { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
     }
+   
 }

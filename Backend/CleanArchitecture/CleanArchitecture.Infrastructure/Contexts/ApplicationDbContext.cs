@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Reflection.Emit;
 
 namespace CleanArchitecture.Infrastructure.Contexts
 {
@@ -22,6 +23,13 @@ namespace CleanArchitecture.Infrastructure.Contexts
             _authenticatedUser = authenticatedUser;
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<Deal> Deal { get; set; }
+        public DbSet<DealValidity> DealValidity { get; set; }
+        public DbSet<LocalBusiness> LocalBusiness { get; set; }
+        public DbSet<NotificationPreferences> NotificationPreferences { get; set; }
+        public DbSet<TourPackage> TourPackages { get; set; }
+        public DbSet<UserPreferences> UserPreferences { get; set; }
+        public DbSet<Interests> Interests { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
@@ -46,8 +54,46 @@ namespace CleanArchitecture.Infrastructure.Contexts
 
             builder.Entity<ApplicationUser>(entity =>
             {
-                entity.ToTable(name: "User");
+                entity.ToTable(name: "Users");
             });
+
+
+            builder.Entity<Deal>(entity =>
+            {
+                entity.ToTable(name: "Deals");
+                entity.HasMany(d => d.DealValidities)
+                      .WithOne(dv => dv.Deal)
+                      .HasForeignKey(dv => dv.DealId);
+            });
+
+            builder.Entity<DealValidity>(entity =>
+            {
+                entity.ToTable(name: "DealValidities");
+                entity.HasOne(dv => dv.Deal)
+                      .WithMany(d => d.DealValidities)
+                      .HasForeignKey(dv => dv.DealId);
+            });
+
+            builder.Entity<LocalBusiness>(entity =>
+            {
+                entity.ToTable(name: "LocalBusinesses");
+            });
+
+            builder.Entity<NotificationPreferences>(entity =>
+            {
+                entity.ToTable(name: "NotificationPreferences");
+            });
+
+            builder.Entity<TourPackage>(entity =>
+            {
+                entity.ToTable(name: "TourPackages");
+            });
+
+          builder.Entity<User>()
+                   .HasOne(u => u.UserPreferences)
+                   .WithOne(up => up.User)
+                   .HasForeignKey<UserPreferences>(up => up.UserId);
+
 
             builder.Entity<IdentityRole>(entity =>
             {

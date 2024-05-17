@@ -1,4 +1,4 @@
-/*using AutoFixture;
+using AutoFixture;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Infrastructure.Contexts;
@@ -53,5 +53,5 @@ namespace CleanArchitecture.Infrastructure.Tests
             Assert.True(result);
         }
     }
-}*/
+}
 
