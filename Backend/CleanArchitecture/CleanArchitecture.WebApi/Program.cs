@@ -2,6 +2,7 @@ using CleanArchitecture.Core;
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Infrastructure.Models;
+using CleanArchitecture.WebApi.Configuration;
 using CleanArchitecture.WebApi.Controllers;
 using CleanArchitecture.WebApi.Extensions;
 using CleanArchitecture.WebApi.Services;
@@ -17,7 +18,6 @@ using System;
 using System.Net.Http;
 
 var builder = WebApplication.CreateBuilder(args);
-var weatherApiKey = "38f9fbea711c5c8c97baceec7c5b356c";
 
 
 //Add configurations
@@ -35,10 +35,17 @@ builder.Services.AddApiVersioningExtension();
 builder.Services.AddHealthChecks();
 builder.Services.AddScoped<IUpdateUserService, UpdateUserService>();
 builder.Services.AddScoped<UpdateUserController>();
+builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
-builder.Services.AddHttpClient<GoogleMapsService>(); 
+builder.Services.AddHttpClient<GoogleMapsService>();
+var configuration = builder.Configuration;
+
+// Daha sonra configuration nesnesini kullanabilirsiniz
+var weatherApiKey = configuration.GetValue<string>("ApiSettings:ApiKey");
+
 builder.Services.AddScoped<WeatherService>(serviceProvider =>
     new WeatherService(serviceProvider.GetRequiredService<IHttpClientFactory>(), weatherApiKey));
+
 //Build the application
 var app = builder.Build();
 

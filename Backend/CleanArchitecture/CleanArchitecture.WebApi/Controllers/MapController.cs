@@ -22,7 +22,12 @@ namespace CleanArchitecture.WebApi.Controllers
             try
             {
                 var coordinates = await _googleMapsService.GetCoordinatesAsync(address);
-                return Ok(coordinates);
+                var response = new
+                {
+                    Latitude = coordinates.Latitude,
+                    Longitude = coordinates.Longitude
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {

@@ -12,7 +12,7 @@ namespace CleanArchitecture.WebApi.Services
         public WeatherService(IHttpClientFactory httpClientFactory, string apiKey)
         {
             _httpClientFactory = httpClientFactory;
-            _apiKey = "38f9fbea711c5c8c97baceec7c5b356c";
+            _apiKey = apiKey;
         }
 
         public async Task<string> GetWeatherAsync(double latitude, double longitude)

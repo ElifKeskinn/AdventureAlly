@@ -1,8 +1,10 @@
+using CleanArchitecture.WebApi.Configuration;
 using CleanArchitecture.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-
+using CleanArchitecture.WebApi.Configuration; // Add this namespace
+using Microsoft.Extensions.Options; // Add this namespace
 
 namespace CleanArchitecture.WebApi.Controllers
 {
@@ -12,10 +14,10 @@ namespace CleanArchitecture.WebApi.Controllers
     {
         private readonly WeatherService _weatherService;
         private readonly string _apiKey;
-        public WeatherController(WeatherService weatherService, string apiKey)
+        public WeatherController(WeatherService weatherService, IOptions<ApiSettings> apiSettings)
         {
             _weatherService = weatherService;
-            _apiKey = apiKey;
+            _apiKey = apiSettings.Value.ApiKey;
         }
 
         [HttpGet("forecast")]
