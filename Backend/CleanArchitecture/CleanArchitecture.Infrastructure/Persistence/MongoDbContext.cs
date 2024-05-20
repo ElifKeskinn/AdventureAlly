@@ -9,7 +9,7 @@ public class MongoDbContext
     {
         // MongoDB baðlantýsýný yapacak olan bu metodu istediðiniz gibi doldurabilirsiniz
         var client = new MongoClient("mongodb://elif:elifkeskin@localhost:27017/");
-        _database = client.GetDatabase("database1");
+        _database = client.GetDatabase("adventureAlly");
     }
     public IMongoCollection<T> GetCollection<T>(string collectionName)
     {

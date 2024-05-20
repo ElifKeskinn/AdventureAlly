@@ -48,7 +48,7 @@ builder.Services.AddScoped<MongoDbContext>(serviceProvider =>
 builder.Services.AddScoped<MongoDBService<BaseEntity>, MongoDBService<BaseEntity>>(provider =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MongoDB");
-    var databaseName = "database1";
+    var databaseName = "adventureAlly";
     var collectionName = "BaseEntity";
     return new MongoDBService<BaseEntity>(connectionString, databaseName, collectionName);
 });
@@ -56,7 +56,7 @@ builder.Services.AddScoped<MongoDBService<BaseEntity>, MongoDBService<BaseEntity
 builder.Services.AddScoped<MongoDBService<Deal>, MongoDBService<Deal>>(provider =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MongoDB");
-    var databaseName = "database1";
+    var databaseName = "adventureAlly";
     var collectionName = "Deal";
     return new MongoDBService<Deal>(connectionString, databaseName, collectionName);
 });
@@ -64,7 +64,7 @@ builder.Services.AddScoped<MongoDBService<Deal>, MongoDBService<Deal>>(provider 
 builder.Services.AddScoped<MongoDBService<DealValidity>, MongoDBService<DealValidity>>(provider =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MongoDB");
-    var databaseName = "database1";
+    var databaseName = "adventureAlly";
     var collectionName = "DealValidity";
     return new MongoDBService<DealValidity>(connectionString, databaseName, collectionName);
 });
@@ -73,42 +73,42 @@ builder.Services.AddScoped<MongoDBService<DealValidity>, MongoDBService<DealVali
 builder.Services.AddScoped<MongoDBService<Interests>, MongoDBService<Interests>>(provider =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MongoDB");
-    var databaseName = "database1";
+    var databaseName = "adventureAlly";
     var collectionName = "Interests";
     return new MongoDBService<Interests>(connectionString, databaseName, collectionName);
 });
 builder.Services.AddScoped<MongoDBService<LocalBusiness>, MongoDBService<LocalBusiness>>(provider =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MongoDB");
-    var databaseName = "database1";
+    var databaseName = "adventureAlly";
     var collectionName = "LocalBusiness";
     return new MongoDBService<LocalBusiness>(connectionString, databaseName, collectionName);
 });
 builder.Services.AddScoped<MongoDBService<NotificationPreferences>, MongoDBService<NotificationPreferences>>(provider =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MongoDB");
-    var databaseName = "database1";
+    var databaseName = "adventureAlly";
     var collectionName = "NotificationPreferences";
     return new MongoDBService<NotificationPreferences>(connectionString, databaseName, collectionName);
 });
 builder.Services.AddScoped<MongoDBService<TourPackage>, MongoDBService<TourPackage>>(provider =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MongoDB");
-    var databaseName = "database1";
+    var databaseName = "adventureAlly";
     var collectionName = "TourPackage";
     return new MongoDBService<TourPackage>(connectionString, databaseName, collectionName);
 });
 builder.Services.AddScoped<MongoDBService<User>, MongoDBService<User>>(provider =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MongoDB");
-    var databaseName = "database1";
+    var databaseName = "adventureAlly";
     var collectionName = "User";
     return new MongoDBService<User>(connectionString, databaseName, collectionName);
 });
 builder.Services.AddScoped<MongoDBService<UserPreferences>, MongoDBService<UserPreferences>>(provider =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MongoDB");
-    var databaseName = "database1";
+    var databaseName = "adventureAlly";
     var collectionName = "UserPreferences";
     return new MongoDBService<UserPreferences>(connectionString, databaseName, collectionName);
 });

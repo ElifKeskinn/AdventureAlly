@@ -21,7 +21,7 @@ namespace CleanArchitecture.UnitTests.Services
             mockUserRepository.Setup(repo => repo.UpdateUserProfile(request)).ReturnsAsync(expectedProfile);
 
             var connectionString = "mongodb://elif:elifkeskin@localhost:27017/"; // Test veritabaný baðlantý dizesi
-            var databaseName = "database1"; // Test veritabaný adý
+            var databaseName = "adventureAlly"; // Test veritabaný adý
             var mongoDbContext = new MongoDbContext(connectionString);
 
             var service = new UpdateUserService(mockUserRepository.Object, mongoDbContext);
