@@ -17,6 +17,13 @@ using Microsoft.Extensions.Options;
 using Serilog;
 using System;
 using System.Net.Http;
+using MongoDB.Driver;
+using CleanArchitecture.Infrastructure.Services;
+using CleanArchitecture.Core.Entities;
+
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,8 +35,85 @@ builder.Services.AddScoped<GoogleMapsService>();
 
 
 // Add services to the container.
+
 builder.Services.AddApplicationLayer();
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
+
+builder.Services.AddScoped<MongoDbContext>(serviceProvider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MongoDB");
+    return new MongoDbContext(connectionString);
+});
+
+builder.Services.AddScoped<MongoDBService<BaseEntity>, MongoDBService<BaseEntity>>(provider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MongoDB");
+    var databaseName = "database1";
+    var collectionName = "BaseEntity";
+    return new MongoDBService<BaseEntity>(connectionString, databaseName, collectionName);
+});
+
+builder.Services.AddScoped<MongoDBService<Deal>, MongoDBService<Deal>>(provider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MongoDB");
+    var databaseName = "database1";
+    var collectionName = "Deal";
+    return new MongoDBService<Deal>(connectionString, databaseName, collectionName);
+});
+
+builder.Services.AddScoped<MongoDBService<DealValidity>, MongoDBService<DealValidity>>(provider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MongoDB");
+    var databaseName = "database1";
+    var collectionName = "DealValidity";
+    return new MongoDBService<DealValidity>(connectionString, databaseName, collectionName);
+});
+
+
+builder.Services.AddScoped<MongoDBService<Interests>, MongoDBService<Interests>>(provider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MongoDB");
+    var databaseName = "database1";
+    var collectionName = "Interests";
+    return new MongoDBService<Interests>(connectionString, databaseName, collectionName);
+});
+builder.Services.AddScoped<MongoDBService<LocalBusiness>, MongoDBService<LocalBusiness>>(provider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MongoDB");
+    var databaseName = "database1";
+    var collectionName = "LocalBusiness";
+    return new MongoDBService<LocalBusiness>(connectionString, databaseName, collectionName);
+});
+builder.Services.AddScoped<MongoDBService<NotificationPreferences>, MongoDBService<NotificationPreferences>>(provider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MongoDB");
+    var databaseName = "database1";
+    var collectionName = "NotificationPreferences";
+    return new MongoDBService<NotificationPreferences>(connectionString, databaseName, collectionName);
+});
+builder.Services.AddScoped<MongoDBService<TourPackage>, MongoDBService<TourPackage>>(provider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MongoDB");
+    var databaseName = "database1";
+    var collectionName = "TourPackage";
+    return new MongoDBService<TourPackage>(connectionString, databaseName, collectionName);
+});
+builder.Services.AddScoped<MongoDBService<User>, MongoDBService<User>>(provider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MongoDB");
+    var databaseName = "database1";
+    var collectionName = "User";
+    return new MongoDBService<User>(connectionString, databaseName, collectionName);
+});
+builder.Services.AddScoped<MongoDBService<UserPreferences>, MongoDBService<UserPreferences>>(provider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MongoDB");
+    var databaseName = "database1";
+    var collectionName = "UserPreferences";
+    return new MongoDBService<UserPreferences>(connectionString, databaseName, collectionName);
+});
+
+
 builder.Services.AddSwaggerExtension();
 builder.Services.AddControllers();
 builder.Services.AddApiVersioningExtension();

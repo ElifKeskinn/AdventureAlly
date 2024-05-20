@@ -1,9 +1,13 @@
 using System.Collections.Generic;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 // Turistlerin tercihlerini ve bildirim tercihlerini saklar. Turistlerin ilgi alanlarýný, dil tercihlerini ve favori mekanlarýný içerir.
 namespace CleanArchitecture.Core.Entities
 {
     public class UserPreferences : AuditableBaseEntity
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public int UserId { get; set; } 
         public User User { get; set; }
         public List<Interests> Interests { get; set; }

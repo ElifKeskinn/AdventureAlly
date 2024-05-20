@@ -1,7 +1,13 @@
-﻿namespace CleanArchitecture.Core.Entities
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace CleanArchitecture.Core.Entities
+  
 {
     public abstract class BaseEntity
     {
-        public virtual int Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public virtual int Id { get; set; }
     }
 }
