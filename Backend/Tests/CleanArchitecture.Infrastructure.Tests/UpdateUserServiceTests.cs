@@ -20,8 +20,8 @@ namespace CleanArchitecture.UnitTests.Services
             var mockUserRepository = new Mock<IUserRepositoryAsync>();
             mockUserRepository.Setup(repo => repo.UpdateUserProfile(request)).ReturnsAsync(expectedProfile);
 
-            var service = new UpdateUserService(mockUserRepository.Object);
-
+            var mockDbContext = new Mock<MongoDbContext>();
+            var service = new UpdateUserService(mockUserRepository.Object, mockDbContext.Object);
             // Act
             var result = await service.UpdateUserProfile(request);
 
