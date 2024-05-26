@@ -86,9 +86,17 @@ namespace CleanArchitecture.UnitTests
 
 
             var result = await updateUserCommandHandler.Handle(command, cancellationToken);
-
-            Assert.NotNull(result);
-            Assert.Equal(command.Id, result.Data.ToString());
+            // result null deðilse assert iþlemlerini yap
+            if (result != null)
+            {
+                Assert.NotNull(result.Data);
+                Assert.Equal(command.Id, result.Data.ToString());
+            }
+            else
+            {
+                // result null ise hata mesajý yaz
+                Assert.False(true, "Handle method returned null result.");
+            }
 
         }
 
@@ -114,9 +122,17 @@ namespace CleanArchitecture.UnitTests
             var cancellationToken = new CancellationToken();
 
             var result = await deleteUserCommandHandler.Handle(command, cancellationToken);
-
-        Assert.NotNull(result);
-            Assert.Equal(command.Id, result.Data.ToString());
+            // result null deðilse assert iþlemlerini yap
+            if (result != null)
+            {
+                Assert.NotNull(result.Data);
+                Assert.Equal(command.Id, result.Data.ToString());
+            }
+            else
+            {
+                // result null ise hata mesajý yaz
+                Assert.False(true, "Handle method returned null result.");
+            }
         }
 
 

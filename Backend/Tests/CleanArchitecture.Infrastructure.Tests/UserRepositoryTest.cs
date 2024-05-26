@@ -17,11 +17,10 @@ namespace CleanArchitecture.Infrastructure.Tests
         private readonly Mock<IAuthenticatedUserService> _authenticatedUserService;
         private readonly User existingUser;
         private readonly ApplicationDbContext context;
-
+        private readonly IMongoCollection<User> userCollection;
 
         public UserRepositoryTest() {
 
-            this._fixture = new Fixture();
             this._fixture = new Fixture();
             this._fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
             this._fixture.Behaviors.Add(new OmitOnRecursionBehavior());
@@ -30,21 +29,26 @@ namespace CleanArchitecture.Infrastructure.Tests
             _dateTimeService = new Mock<IDateTimeService>();
             _authenticatedUserService = new Mock<IAuthenticatedUserService>();
 
-            var database = new Mock<IMongoDatabase>();
-            var userCollection = new Mock<IMongoCollection<User>>();
-            // Mock veritabaný ve koleksiyonun ayarlanmasý
-            database.Setup(db => db.GetCollection<User>(It.IsAny<string>(), null))
-                    .Returns(userCollection.Object);
+
+            var client = new MongoClient("mongodb://localhost:27017");
+            var database = client.GetDatabase("testdb");
+            userCollection = database.GetCollection<User>("users");
+            /*  var database = new Mock<IMongoDatabase>();
+              var userCollection = new Mock<IMongoCollection<User>>();
+              // Mock veritabaný ve koleksiyonun ayarlanmasý
+              database.Setup(db => db.GetCollection<User>(It.IsAny<string>(), null))
+                      .Returns(userCollection.Object);*/
 
             /* var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
         .UseInMemoryDatabase("TestDatabase");*/
 
-            context = new ApplicationDbContext(database.Object, _dateTimeService.Object, _authenticatedUserService.Object);
-
+            //context = new ApplicationDbContext(database.Object, _dateTimeService.Object, _authenticatedUserService.Object);
+            context = new ApplicationDbContext(null, _dateTimeService.Object, _authenticatedUserService.Object);
+            userCollection.InsertOne(existingUser);
             context.AddAsync(existingUser).Wait();  // AddAsync metodunu kullanarak kullanýcýyý ekliyoruz
            // context = new ApplicationDbContext(optionsBuilder.Options, _dateTimeService.Object, _authenticatedUserService.Object);
 
-            context.Users.InsertOne(existingUser);
+          //  context.Users.InsertOne(existingUser);
             context.SaveChanges();
         }
 
