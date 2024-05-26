@@ -1,13 +1,13 @@
 ﻿using CleanArchitecture.Core.Interfaces;
+using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Infrastructure.Contexts;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Repository
 {
-    public class GenericRepositoryAsync<T> : IGenericRepositoryAsync<T> where T : class
+    public class GenericRepositoryAsync<T> : IGenericRepositoryAsync<T> where T : AuditableBaseEntity
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -16,45 +16,43 @@ namespace CleanArchitecture.Infrastructure.Repository
             _dbContext = dbContext;
         }
 
-        public virtual async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(string id)
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            var filter = Builders<T>.Filter.Eq(e => e.Id, id);
+            return await _dbContext.GetCollection<T>().Find(filter).FirstOrDefaultAsync();
         }
 
         public async Task<IReadOnlyList<T>> GetPagedReponseAsync(int pageNumber, int pageSize)
         {
-            return await _dbContext
-                .Set<T>()
+            return await _dbContext.GetCollection<T>()
+                .Find(Builders<T>.Filter.Empty)
                 .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .AsNoTracking()
+                .Limit(pageSize)
                 .ToListAsync();
         }
 
         public async Task<T> AddAsync(T entity)
         {
-            await _dbContext.Set<T>().AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.AddAsync(entity);
             return entity;
         }
 
         public async Task UpdateAsync(T entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.UpdateAsync(entity);
         }
 
         public async Task DeleteAsync(T entity)
         {
-            _dbContext.Set<T>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
+            var filter = Builders<T>.Filter.Eq(e => e.Id, entity.Id);
+            await _dbContext.GetCollection<T>().DeleteOneAsync(filter);
         }
 
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
-            return await _dbContext
-                 .Set<T>()
-                 .ToListAsync();
+            return await _dbContext.GetCollection<T>()
+                .Find(Builders<T>.Filter.Empty)
+                .ToListAsync();
         }
     }
 }

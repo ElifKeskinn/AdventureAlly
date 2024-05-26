@@ -4,23 +4,24 @@ using CleanArchitecture.Core.Interfaces.Repositories;
 using CleanArchitecture.Infrastructure.Contexts;
 using CleanArchitecture.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Repositories
 {
     public class UserRepositoryAsync : GenericRepositoryAsync<User>, IUserRepositoryAsync
     {
-        private readonly DbSet<User> _userss;
+        private readonly IMongoCollection<User> Users;
 
         public UserRepositoryAsync(ApplicationDbContext dbContext) : base(dbContext)
         {
-            _userss = dbContext.Set<User>();
+           Users = dbContext.Users;
         }
 
-        public Task<bool> IsUniqueEmailAsync(string email)
+        public async Task<bool> IsUniqueEmailAsync(string email)
         {
-            return _userss
-                .AllAsync(p => p.Email != email);
+            var existingUser = await Users.Find(p => p.Email == email).FirstOrDefaultAsync();
+            return existingUser == null;
         }
 
         public Task<UserProfile> UpdateUserProfile(UserProfileUpdateRequest request)

@@ -10,7 +10,7 @@ namespace CleanArchitecture.Core.Features.Users.Queries.GetUserById
 {
     public class GetUserByIdQuery : IRequest<Response<User>>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Response<User>>
         {
             private readonly IUserRepositoryAsync _userRepository;

@@ -40,9 +40,8 @@ namespace CleanArchitecture.UnitTests
 
             var updateUserCommandHandler = new UpdateUserCommandHandler(userRepositoryAsync.Object);
 
-            var command = this.fixture.Create<UpdateUserCommand>();
-            var cancellationToken = this.fixture.Create<CancellationToken>();
-
+            var command = new UpdateUserCommand();
+            var cancellationToken = new CancellationToken();
             Assert.ThrowsAsync<EntityNotFoundException>(() => updateUserCommandHandler.Handle(command, cancellationToken));
         }
 
@@ -68,8 +67,9 @@ namespace CleanArchitecture.UnitTests
         [Fact]
         public async Task When_UpdateUserCommandHandlerInvoked_ShouldReturnUserId()
         {
-            User user = this.fixture.Create<User>();
-            this.fixture.Customize<UpdateUserCommand>(c => c.With(x => x.Id, user.Id));
+            var user = fixture.Build<User>().Create();
+
+            var userId = user.Id;
 
             this.userRepositoryAsync
               .Setup(pr => pr.GetByIdAsync(It.IsAny<int>()))
@@ -81,9 +81,9 @@ namespace CleanArchitecture.UnitTests
 
             var updateUserCommandHandler = new UpdateUserCommandHandler(this.userRepositoryAsync.Object);
 
-            var command = this.fixture.Create<UpdateUserCommand>();
+            var command = new UpdateUserCommand { Id = userId };
+            var cancellationToken = new CancellationToken();
 
-            var cancellationToken = this.fixture.Create<CancellationToken>();
 
             var result = await updateUserCommandHandler.Handle(command, cancellationToken);
 
@@ -95,8 +95,9 @@ namespace CleanArchitecture.UnitTests
         [Fact]
         public async Task When_DeleteUserByIdCommandInvoked_ShouldDeleteUserReturnUserID()
         {
-         User user = this.fixture.Create<User>();
-            this.fixture.Customize<DeleteUserByIdCommand>(c => c.With(x => x.Id, user.Id));
+            var user = fixture.Create<User>();
+            var userId = user.Id;
+
 
             this.userRepositoryAsync
              .Setup(pr => pr.GetByIdAsync(It.IsAny<int>()))
@@ -109,11 +110,10 @@ namespace CleanArchitecture.UnitTests
 
         var deleteUserCommandHandler = new DeleteUserByIdCommandHandler(this.userRepositoryAsync.Object);
 
-        var command = this.fixture.Create<DeleteUserByIdCommand>();
+            var command = new DeleteUserByIdCommand { Id = userId };
+            var cancellationToken = new CancellationToken();
 
-        var cancellationToken = this.fixture.Create<CancellationToken>();
-
-        var result = await deleteUserCommandHandler.Handle(command, cancellationToken);
+            var result = await deleteUserCommandHandler.Handle(command, cancellationToken);
 
         Assert.NotNull(result);
             Assert.Equal(command.Id, result.Data);

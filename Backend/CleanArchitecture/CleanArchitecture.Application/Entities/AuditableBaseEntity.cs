@@ -8,7 +8,7 @@ namespace CleanArchitecture.Core.Entities
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public virtual int Id { get; set; }
+        public String Id { get; set; }
         public string CreatedBy { get; set; }
         public DateTime Created { get; set; }
         public string LastModifiedBy { get; set; }

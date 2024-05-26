@@ -11,7 +11,7 @@ namespace CleanArchitecture.Core.Features.Users.Commands.UpdateUser
 {
     public class UpdateUserCommand : IRequest<Response<int>>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Place { get; set; }
         public List<Interests> Interests { get; set; }

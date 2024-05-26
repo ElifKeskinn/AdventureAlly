@@ -8,6 +8,6 @@ namespace CleanArchitecture.Core.Entities
     {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public virtual int Id { get; set; }
+        public string Id { get; set; }
     }
 }

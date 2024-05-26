@@ -3,6 +3,7 @@ using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Core.Interfaces.Repositories;
 using CleanArchitecture.WebApi.Services;
 using Microsoft.AspNetCore.Routing;
+using MongoDbGenericRepository;
 using Moq;
 using System.Threading.Tasks;
 

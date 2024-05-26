@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Core.Enums;
+﻿using AspNetCore.Identity.MongoDbCore.Models;
+using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace CleanArchitecture.Infrastructure.Seeds
 {
     public static class DefaultBasicUser
     {
-        public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             //Seed Default User
             var defaultUser = new ApplicationUser

@@ -9,7 +9,7 @@ namespace CleanArchitecture.Core.Features.Users.Commands.DeleteUserById
 {
     public class DeleteUserByIdCommand : IRequest<Response<int>>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public class DeleteUserByIdCommandHandler : IRequestHandler<DeleteUserByIdCommand, Response<int>>
         {
             private readonly IUserRepositoryAsync _userRepository;

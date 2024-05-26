@@ -27,7 +27,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(string id)
         {
             return Ok(await Mediator.Send(new GetUserByIdQuery { Id = id }));
         }
@@ -43,7 +43,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
         // PUT api/<controller>/5
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Put(int id, UpdateUserCommand command)
+        public async Task<IActionResult> Put(string id, UpdateUserCommand command)
         {
             if (id != command.Id)
             {
@@ -55,7 +55,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             return Ok(await Mediator.Send(new DeleteUserByIdCommand { Id = id }));
         }

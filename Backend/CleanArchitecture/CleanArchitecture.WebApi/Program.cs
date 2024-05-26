@@ -9,6 +9,7 @@ using CleanArchitecture.WebApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.MongoDB;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,7 +21,18 @@ using System.Net.Http;
 using MongoDB.Driver;
 using CleanArchitecture.Infrastructure.Services;
 using CleanArchitecture.Core.Entities;
-
+using CleanArchitecture.Infrastructure.Contexts;
+using CleanArchitecture.Infrastructure.Models;
+using ApplicationUser = CleanArchitecture.Infrastructure.Models.ApplicationUser;
+using AspNetCore.Identity.Mongo;
+using MongoDB.Driver.Core.Configuration;
+using IdentityRole = Microsoft.AspNetCore.Identity.MongoDB.IdentityRole;
+using ApplicationRole = CleanArchitecture.Infrastructure.Models.ApplicationRole;
+using AspNetCore.Identity.MongoDbCore.Models;
+using MongoDbGenericRepository;
+using AspNetCore.Identity.MongoDbCore.Infrastructure;
+using MongoDbContext = CleanArchitecture.Infrastructure.Contexts.MongoDbContext;
+using Org.BouncyCastle.Crypto.Tls;
 
 
 
@@ -39,24 +51,31 @@ builder.Services.AddScoped<GoogleMapsService>();
 builder.Services.AddApplicationLayer();
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
 
-builder.Services.AddScoped<MongoDbContext>(serviceProvider =>
+builder.Services.AddScoped(serviceProvider =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("MongoDB");
-    return new MongoDbContext(connectionString);
+    var connectionString = builder.Configuration.GetConnectionString("ConnectionString");
+    var databaseName = "AdventureAllyCluster"; // Veritabaný adýný buraya girin
+    return new CleanArchitecture.Infrastructure.Contexts.MongoDbContext(connectionString, databaseName);
 });
+builder.Services.AddScoped(typeof(MongoDBService<>), typeof(MongoDBService<>));
+builder.Services.AddScoped<UserService>();
 
-builder.Services.AddScoped<MongoDBService<BaseEntity>, MongoDBService<BaseEntity>>(provider =>
+//builder.Services.AddScoped<IAccountService, AccountService>();
+
+
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("MongoDB");
-    var databaseName = "adventureAlly";
-    var collectionName = "BaseEntity";
-    return new MongoDBService<BaseEntity>(connectionString, databaseName, collectionName);
-});
+    options.User.RequireUniqueEmail = true;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+}).AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(
+    builder.Configuration.GetConnectionString("ConnectionString"), "AdvantureAllyCluster")
+.AddDefaultTokenProviders();
 
+/*
 builder.Services.AddScoped<MongoDBService<Deal>, MongoDBService<Deal>>(provider =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MongoDB");
-    var databaseName = "adventureAlly";
+    var databaseName = "AdventureAllyCluster";
     var collectionName = "Deal";
     return new MongoDBService<Deal>(connectionString, databaseName, collectionName);
 });
@@ -112,8 +131,9 @@ builder.Services.AddScoped<MongoDBService<UserPreferences>, MongoDBService<UserP
     var collectionName = "UserPreferences";
     return new MongoDBService<UserPreferences>(connectionString, databaseName, collectionName);
 });
+*/
 
-
+builder.Services.AddScoped<UserService>();
 builder.Services.AddSwaggerExtension();
 builder.Services.AddControllers();
 builder.Services.AddApiVersioningExtension();
@@ -133,6 +153,45 @@ builder.Services.AddScoped<WeatherService>(serviceProvider =>
     var apiSettings = serviceProvider.GetRequiredService<IOptions<ApiSettings>>();
     return new WeatherService(serviceProvider.GetRequiredService<IHttpClientFactory>(), apiSettings);
 });
+
+// Identity configuration
+
+var options = new MongoIdentityOptions { 
+UsersCollection = "Users",
+RolesCollection = "Roles"
+};
+
+builder.Services.AddSingleton<MongoDbContext>(serviceProvider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("ConnectionString");
+    var databaseName = "AdventureAllyCluster"; // Veritabaný adýný buraya girin
+    return new MongoDbContext(connectionString, databaseName);
+});
+
+
+
+
+var mongoConnectionString = builder.Configuration.GetConnectionString("ConnectionString");
+var mongoDatabaseName = "AdventureAllyCluster"; // Veritabaný adýný buraya girin
+
+builder.Services.Configure<MongoDbSettings>(options =>
+{
+    options.ConnectionString = mongoConnectionString;
+    options.DatabaseName = mongoDatabaseName;
+});
+
+
+///AddDbContext<ApplicationDbContext>();
+/*
+builder.Services.AddIdentity<ApplicationUser, MongoIdentityRole>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    // Diðer yapýlandýrmalar...
+})
+.AddMongoDbStores<ApplicationUser, MongoIdentityRole, Guid>(
+    mongoConnectionString, mongoDatabaseName)
+.AddDefaultTokenProviders();*/
 
 //Build the application
 var app = builder.Build();
@@ -176,11 +235,12 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
+        var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
         await CleanArchitecture.Infrastructure.Seeds.DefaultRoles.SeedAsync(userManager, roleManager);
         await CleanArchitecture.Infrastructure.Seeds.DefaultSuperAdmin.SeedAsync(userManager, roleManager);
         await CleanArchitecture.Infrastructure.Seeds.DefaultBasicUser.SeedAsync(userManager, roleManager);
+
+
         Log.Information("Finished Seeding Default Data");
         Log.Information("Application Starting");
     }

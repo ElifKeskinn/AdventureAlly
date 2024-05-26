@@ -2,6 +2,7 @@ using CleanArchitecture.Core.DTOs.User;
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Core.Interfaces.Repositories;
 using System.Threading.Tasks;
+using CleanArchitecture.Infrastructure.Contexts;
 
 namespace CleanArchitecture.WebApi.Services
 {
