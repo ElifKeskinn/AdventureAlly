@@ -35,7 +35,7 @@ namespace CleanArchitecture.UnitTests
         public void When_UpdateUserCommandHandlerInvoked_WithNotExistingUser_ShouldThrowEntityNotFoundException()
         {
             userRepositoryAsync
-                .Setup(pr => pr.GetByIdAsync(It.IsAny<int>()))
+                .Setup(pr => pr.GetByIdAsync(It.IsAny<String>()))
                 .ReturnsAsync((User)null);
 
             var updateUserCommandHandler = new UpdateUserCommandHandler(userRepositoryAsync.Object);
@@ -49,7 +49,7 @@ namespace CleanArchitecture.UnitTests
         public void When_UpdateUserCommandHandlerInvoked_WithNotUniqueEmail_ShouldThrowEmailIsNotUniqueException()
         {
             this.userRepositoryAsync
-                .Setup(pr => pr.GetByIdAsync(It.IsAny<int>()))
+                .Setup(pr => pr.GetByIdAsync(It.IsAny<String>()))
                 .ReturnsAsync(this.fixture.Create<User>());
 
             this.userRepositoryAsync
@@ -72,7 +72,7 @@ namespace CleanArchitecture.UnitTests
             var userId = user.Id;
 
             this.userRepositoryAsync
-              .Setup(pr => pr.GetByIdAsync(It.IsAny<int>()))
+              .Setup(pr => pr.GetByIdAsync(It.IsAny<String>()))
               .ReturnsAsync(user);
 
             this.userRepositoryAsync
@@ -88,7 +88,7 @@ namespace CleanArchitecture.UnitTests
             var result = await updateUserCommandHandler.Handle(command, cancellationToken);
 
             Assert.NotNull(result);
-            Assert.Equal(command.Id, result.Data);
+            Assert.Equal(command.Id, result.Data.ToString());
 
         }
 
@@ -100,7 +100,7 @@ namespace CleanArchitecture.UnitTests
 
 
             this.userRepositoryAsync
-             .Setup(pr => pr.GetByIdAsync(It.IsAny<int>()))
+             .Setup(pr => pr.GetByIdAsync(It.IsAny<String>()))
              .ReturnsAsync(user);
 
 
@@ -116,7 +116,7 @@ namespace CleanArchitecture.UnitTests
             var result = await deleteUserCommandHandler.Handle(command, cancellationToken);
 
         Assert.NotNull(result);
-            Assert.Equal(command.Id, result.Data);
+            Assert.Equal(command.Id, result.Data.ToString());
         }
 
 

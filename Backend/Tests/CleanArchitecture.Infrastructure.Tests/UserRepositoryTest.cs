@@ -4,6 +4,7 @@ using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Infrastructure.Contexts;
 using CleanArchitecture.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using Moq;
 using Xunit;
 
@@ -29,12 +30,21 @@ namespace CleanArchitecture.Infrastructure.Tests
             _dateTimeService = new Mock<IDateTimeService>();
             _authenticatedUserService = new Mock<IAuthenticatedUserService>();
 
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
-       .UseInMemoryDatabase("TestDatabase");
+            var database = new Mock<IMongoDatabase>();
+            var userCollection = new Mock<IMongoCollection<User>>();
+            // Mock veritabaný ve koleksiyonun ayarlanmasý
+            database.Setup(db => db.GetCollection<User>(It.IsAny<string>(), null))
+                    .Returns(userCollection.Object);
 
-            context = new ApplicationDbContext(optionsBuilder.Options, _dateTimeService.Object, _authenticatedUserService.Object);
+            /* var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
+        .UseInMemoryDatabase("TestDatabase");*/
 
-            context.Users.Add(existingUser);
+            context = new ApplicationDbContext(database.Object, _dateTimeService.Object, _authenticatedUserService.Object);
+
+            context.AddAsync(existingUser).Wait();  // AddAsync metodunu kullanarak kullanýcýyý ekliyoruz
+           // context = new ApplicationDbContext(optionsBuilder.Options, _dateTimeService.Object, _authenticatedUserService.Object);
+
+            context.Users.InsertOne(existingUser);
             context.SaveChanges();
         }
 

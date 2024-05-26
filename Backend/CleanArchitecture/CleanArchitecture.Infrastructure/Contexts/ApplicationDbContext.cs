@@ -2,10 +2,11 @@
 using CleanArchitecture.Core.Entities;
 using MongoDB.Driver;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Infrastructure.Contexts
 {
-    public class ApplicationDbContext
+    public class ApplicationDbContext: DbContext
     {
         private readonly IMongoDatabase _database;
         private readonly IDateTimeService _dateTime;
