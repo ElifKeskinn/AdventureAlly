@@ -6,8 +6,8 @@ namespace CleanArchitecture.Core.Entities
 {
     public class User : AuditableBaseEntity
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
+       /* [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]**/
 
         // ObjectId olarak saklanacak ayrı bir alan
         public string PreferencesId { get; set; }

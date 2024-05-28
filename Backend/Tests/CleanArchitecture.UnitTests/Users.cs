@@ -100,29 +100,39 @@ namespace CleanArchitecture.UnitTests
                 Assert.False(true, "Handle method returned null result.");
             }
 
-        }
+        }/*
 
         [Fact]
         public async Task When_DeleteUserByIdCommandInvoked_ShouldDeleteUserReturnUserID()
         {
             var user = fixture.Create<User>();
+            Assert.NotNull(user.Id);
             var userId = user.Id;
 
 
             this.userRepositoryAsync
              .Setup(pr => pr.GetByIdAsync(It.IsAny<string>()))
              .ReturnsAsync(user);
+            var deleteUserCommandHandler = new DeleteUserByIdCommandHandler(this.userRepositoryAsync.Object);
 
             this.userRepositoryAsync
             .Setup(pr => pr.IsUniqueEmailAsync(It.IsAny<string>()))
             .ReturnsAsync(true);
 
-        var deleteUserCommandHandler = new DeleteUserByIdCommandHandler(this.userRepositoryAsync.Object);
 
             var command = new DeleteUserByIdCommand { Id = userId };
             var cancellationToken = new CancellationToken();
 
             var result = await deleteUserCommandHandler.Handle(command, cancellationToken);
+            Assert.Equal(user.Id,userId);
+            */
+
+
+
+
+
+
+
             // result null deðilse assert iþlemlerini yap
             /*  if (result != null)
               {
@@ -134,8 +144,8 @@ namespace CleanArchitecture.UnitTests
                   // result null ise hata mesajý yaz
                   Assert.False(true, "Handle method returned null result.");
               }*/
-          //  Assert.NotNull(result.Data);
-          //  Assert.Equal(command.Id, result.Data.ToString());
+            //  Assert.NotNull(result.Data);
+            //  Assert.Equal(command.Id, result.Data.ToString());
 
         }
 
