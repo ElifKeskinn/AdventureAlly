@@ -11,6 +11,7 @@ using MySqlX.XDevAPI.Common;
 using static CleanArchitecture.Core.Features.Users.Commands.DeleteUserById.DeleteUserByIdCommand;
 using static CleanArchitecture.Core.Features.Users.Commands.UpdateUser.UpdateUserCommand;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using CleanArchitecture.UnitTests.Utilities;
 
 namespace CleanArchitecture.UnitTests
 {
@@ -25,6 +26,7 @@ namespace CleanArchitecture.UnitTests
             fixture = new Fixture();
             fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            fixture.Customizations.Add(new ObjectIdSpecimenBuilder());
             userRepositoryAsync = new Mock<IUserRepositoryAsync>();
 
 

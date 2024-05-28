@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using Moq;
 using Xunit;
+using MongoDB.Driver.Core.Misc;
+using CleanArchitecture.UnitTests.Utilities;
 
 namespace CleanArchitecture.Infrastructure.Tests
 {
@@ -24,6 +26,7 @@ namespace CleanArchitecture.Infrastructure.Tests
             this._fixture = new Fixture();
             this._fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
             this._fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+          this._fixture.Customizations.Add(new ObjectIdSpecimenBuilder());
 
             this.existingUser = _fixture.Create<User>();
             _dateTimeService = new Mock<IDateTimeService>();
