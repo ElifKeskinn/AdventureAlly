@@ -147,8 +147,6 @@ namespace CleanArchitecture.UnitTests
             //  Assert.NotNull(result.Data);
             //  Assert.Equal(command.Id, result.Data.ToString());
 
-        }
-
 
     }
 
