@@ -8,7 +8,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System.Threading.Tasks;
-
+using System.Net.Mail;
+using System.Net;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace CleanArchitecture.Infrastructure.Services
 {

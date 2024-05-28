@@ -33,12 +33,14 @@ using MongoDbGenericRepository;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using MongoDbContext = CleanArchitecture.Infrastructure.Contexts.MongoDbContext;
 using Org.BouncyCastle.Crypto.Tls;
+using CleanArchitecture.Core.Settings;
+using System.Configuration;
 
 
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+var configuration = builder.Configuration;
 
 //Add configurations
 builder.Configuration.AddJsonFile("appsettings.json");
@@ -47,6 +49,7 @@ builder.Services.AddScoped<GoogleMapsService>();
 
 
 // Add services to the container.
+
 
 builder.Services.AddApplicationLayer();
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
@@ -62,6 +65,10 @@ builder.Services.AddScoped<UserService>();
 
 //builder.Services.AddScoped<IAccountService, AccountService>();
 
+//email services
+
+builder.Services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
@@ -143,8 +150,6 @@ builder.Services.AddScoped<UpdateUserController>();
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 builder.Services.AddHttpClient<GoogleMapsService>();
-var configuration = builder.Configuration;
-
 // Daha sonra configuration nesnesini kullanabilirsiniz
 var weatherApiKey = configuration.GetValue<string>("ApiSettings:ApiKey");
 
