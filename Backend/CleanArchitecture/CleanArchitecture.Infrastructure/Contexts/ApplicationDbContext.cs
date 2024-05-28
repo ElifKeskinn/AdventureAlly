@@ -7,13 +7,15 @@ using Microsoft.EntityFrameworkCore;
 namespace CleanArchitecture.Infrastructure.Contexts
 {
     public class ApplicationDbContext: DbContext
-    {
+    {   
+        private readonly IMongoClient _mongoClient;
         private readonly IMongoDatabase _database;
         private readonly IDateTimeService _dateTime;
         private readonly IAuthenticatedUserService _authenticatedUser;
 
-        public ApplicationDbContext(IMongoDatabase database, IDateTimeService dateTime, IAuthenticatedUserService authenticatedUser)
+        public ApplicationDbContext(IMongoClient client, IMongoDatabase database, IDateTimeService dateTime, IAuthenticatedUserService authenticatedUser)
         {
+            _mongoClient = client;
             _database = database;
             _dateTime = dateTime;
             _authenticatedUser = authenticatedUser;
