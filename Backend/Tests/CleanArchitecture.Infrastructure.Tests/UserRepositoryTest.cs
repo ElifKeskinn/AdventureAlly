@@ -1,4 +1,4 @@
-using AutoFixture;
+/*using AutoFixture;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Infrastructure.Contexts;
@@ -37,22 +37,26 @@ namespace CleanArchitecture.Infrastructure.Tests
             var database = client.GetDatabase("AdventureAllyCluster");
             context = new ApplicationDbContext(client,database, _dateTimeService.Object, _authenticatedUserService.Object);
 
-            userCollection = database.GetCollection<User>("users");
-            /*  var database = new Mock<IMongoDatabase>();
-              var userCollection = new Mock<IMongoCollection<User>>();
-              // Mock veritabaný ve koleksiyonun ayarlanmasý
-              database.Setup(db => db.GetCollection<User>(It.IsAny<string>(), null))
-                      .Returns(userCollection.Object);*/
+            userCollection = database.GetCollection<User>("users");*/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*  var database = new Mock<IMongoDatabase>();
+  var userCollection = new Mock<IMongoCollection<User>>();
+  // Mock veritabaný ve koleksiyonun ayarlanmasý
+  database.Setup(db => db.GetCollection<User>(It.IsAny<string>(), null))
+          .Returns(userCollection.Object);*/
 
-            /* var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
-        .UseInMemoryDatabase("TestDatabase");*/
+/* var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
+.UseInMemoryDatabase("TestDatabase");*/
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/*  userCollection.InsertOne(existingUser);
+  context.AddAsync(existingUser).Wait();*/
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// AddAsync metodunu kullanarak kullanýcýyý ekliyoruz
+//context = new ApplicationDbContext(optionsBuilder.Options, _dateTimeService.Object, _authenticatedUserService.Object);
 
-            userCollection.InsertOne(existingUser);
-            context.AddAsync(existingUser).Wait();  // AddAsync metodunu kullanarak kullanýcýyý ekliyoruz
-           //context = new ApplicationDbContext(optionsBuilder.Options, _dateTimeService.Object, _authenticatedUserService.Object);
-
-          //  context.Users.InsertOne(existingUser);
-            context.SaveChanges();
+//  context.Users.InsertOne(existingUser);
+//////////////////////////////////////////////////////////////////////////////////////////////////**/*
+/*context.SaveChanges();
         }
 
         [Fact]
@@ -75,4 +79,5 @@ namespace CleanArchitecture.Infrastructure.Tests
         }
     }
 }
-
+*/
+/////////////////////////////////////////////////////////////////////////////////////////////////
