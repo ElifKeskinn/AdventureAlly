@@ -114,12 +114,6 @@ namespace CleanArchitecture.UnitTests
              .ReturnsAsync(user);
 
             this.userRepositoryAsync
-    .Setup(pr => pr.DeleteAsync(It.IsAny<User>()))
-    .Returns(Task.FromResult(true));
-
-
-
-            this.userRepositoryAsync
             .Setup(pr => pr.IsUniqueEmailAsync(It.IsAny<string>()))
             .ReturnsAsync(true);
 
@@ -130,16 +124,19 @@ namespace CleanArchitecture.UnitTests
 
             var result = await deleteUserCommandHandler.Handle(command, cancellationToken);
             // result null deðilse assert iþlemlerini yap
-            if (result != null)
-            {
-                Assert.NotNull(result.Data);
-                Assert.Equal(command.Id, result.Data.ToString());
-            }
-            else
-            {
-                // result null ise hata mesajý yaz
-                Assert.False(true, "Handle method returned null result.");
-            }
+            /*  if (result != null)
+              {
+                  Assert.NotNull(result.Data);
+                  Assert.Equal(command.Id, result.Data.ToString());
+              }
+              else
+              {
+                  // result null ise hata mesajý yaz
+                  Assert.False(true, "Handle method returned null result.");
+              }*/
+          //  Assert.NotNull(result.Data);
+            Assert.Equal(command.Id, result.Data.ToString());
+
         }
 
 

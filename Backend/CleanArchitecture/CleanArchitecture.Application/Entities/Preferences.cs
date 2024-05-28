@@ -8,7 +8,7 @@ namespace CleanArchitecture.Core.Entities
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public int UserId { get; set; } 
+        public string UserId { get; set; } 
         public User User { get; set; }
         public List<Interests> Interests { get; set; }
         public string PreferredLanguage { get; set; }
