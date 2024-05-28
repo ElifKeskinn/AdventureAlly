@@ -5,12 +5,13 @@ using CleanArchitecture.Core.Entities;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace CleanArchitecture.Core.Features.Users.Queries.GetUserById
 {
     public class GetUserByIdQuery : IRequest<Response<User>>
     {
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
         public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Response<User>>
         {
             private readonly IUserRepositoryAsync _userRepository;

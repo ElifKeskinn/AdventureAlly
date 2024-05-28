@@ -4,6 +4,7 @@ using CleanArchitecture.Infrastructure.Contexts;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace CleanArchitecture.Infrastructure.Repository
 {
@@ -16,7 +17,7 @@ namespace CleanArchitecture.Infrastructure.Repository
             _dbContext = dbContext;
         }
 
-        public virtual async Task<T> GetByIdAsync(string id)
+        public virtual async Task<T> GetByIdAsync(ObjectId id)
         {
             var filter = Builders<T>.Filter.Eq(e => e.Id, id);
             return await _dbContext.GetCollection<T>().Find(filter).FirstOrDefaultAsync();

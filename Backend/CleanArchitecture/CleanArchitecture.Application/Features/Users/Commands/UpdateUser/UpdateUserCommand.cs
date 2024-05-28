@@ -3,29 +3,30 @@ using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces.Repositories;
 using CleanArchitecture.Core.Wrappers;
 using MediatR;
+using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Core.Features.Users.Commands.UpdateUser
 {
-    public class UpdateUserCommand : IRequest<Response<string>>
+    public class UpdateUserCommand : IRequest<Response<ObjectId>>
     {
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
         public string Name { get; set; }
         public string Place { get; set; }
         public List<Interests> Interests { get; set; }
         public string PreferredLanguage { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Response<string>>
+        public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Response<ObjectId>>
         {
             private readonly IUserRepositoryAsync _userRepository;
             public UpdateUserCommandHandler(IUserRepositoryAsync userRepository)
             {
                 _userRepository = userRepository;
             }
-            public async Task<Response<string>> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
+            public async Task<Response<ObjectId>> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
             {
                 var user = await _userRepository.GetByIdAsync(command.Id);
 
@@ -50,7 +51,7 @@ public string Phone { get; set; }*/
                 user.PreferredLanguage = command.PreferredLanguage;
 
                 await _userRepository.UpdateAsync(user);
-                return new Response<string>(user.Id);
+                return new Response<ObjectId>(user.Id);
             }
         }
     }

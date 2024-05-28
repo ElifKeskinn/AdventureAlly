@@ -6,10 +6,11 @@ using MediatR;
 using System.Threading;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace CleanArchitecture.Core.Features.Users.Commands.CreateUser
 {
-    public partial class CreateUserCommand : IRequest<Response<string>>
+    public partial class CreateUserCommand : IRequest<Response<ObjectId>>
     {
         public string Name { get; set; }
         public string Place { get; set; }
@@ -18,7 +19,7 @@ namespace CleanArchitecture.Core.Features.Users.Commands.CreateUser
         public string Email { get; set; }
         public string Phone { get; set; }
     }
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<string>>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<ObjectId>>
     {
         private readonly IUserRepositoryAsync _userRepository;
         private readonly IMapper _mapper;
@@ -28,11 +29,11 @@ namespace CleanArchitecture.Core.Features.Users.Commands.CreateUser
             _mapper = mapper;
         }
 
-        public async Task<Response<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Response<ObjectId>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<User>(request);
             await _userRepository.AddAsync(user);
-            return new Response<string>(user.Id);
+            return new Response<ObjectId>(user.Id);
         }
     }
 }

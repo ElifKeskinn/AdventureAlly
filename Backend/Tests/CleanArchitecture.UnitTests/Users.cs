@@ -12,6 +12,7 @@ using static CleanArchitecture.Core.Features.Users.Commands.DeleteUserById.Delet
 using static CleanArchitecture.Core.Features.Users.Commands.UpdateUser.UpdateUserCommand;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using CleanArchitecture.UnitTests.Utilities;
+using MongoDB.Bson;
 
 namespace CleanArchitecture.UnitTests
 {
@@ -37,7 +38,7 @@ namespace CleanArchitecture.UnitTests
         public void When_UpdateUserCommandHandlerInvoked_WithNotExistingUser_ShouldThrowEntityNotFoundException()
         {
             userRepositoryAsync
-                .Setup(pr => pr.GetByIdAsync(It.IsAny<string>()))
+                .Setup(pr => pr.GetByIdAsync(It.IsAny<ObjectId>()))
                 .ReturnsAsync((User)null);
 
             var updateUserCommandHandler = new UpdateUserCommandHandler(userRepositoryAsync.Object);
@@ -51,7 +52,7 @@ namespace CleanArchitecture.UnitTests
         public void When_UpdateUserCommandHandlerInvoked_WithNotUniqueEmail_ShouldThrowEmailIsNotUniqueException()
         {
             this.userRepositoryAsync
-                .Setup(pr => pr.GetByIdAsync(It.IsAny<string>()))
+                .Setup(pr => pr.GetByIdAsync(It.IsAny<ObjectId>()))
                 .ReturnsAsync(this.fixture.Create<User>());
 
             this.userRepositoryAsync
@@ -74,7 +75,7 @@ namespace CleanArchitecture.UnitTests
             var userId = user.Id;
 
             this.userRepositoryAsync
-              .Setup(pr => pr.GetByIdAsync(It.IsAny<string>()))
+              .Setup(pr => pr.GetByIdAsync(It.IsAny<ObjectId>()))
               .ReturnsAsync(user);
 
             this.userRepositoryAsync
@@ -91,7 +92,7 @@ namespace CleanArchitecture.UnitTests
             // result null deðilse assert iþlemlerini yap
             if (result != null)
             {
-                Assert.NotNull(result.Data);
+                Assert.NotNull(result);
                 Assert.Equal(command.Id, result.Data);
             }
             else
@@ -111,7 +112,7 @@ namespace CleanArchitecture.UnitTests
 
 
             this.userRepositoryAsync
-             .Setup(pr => pr.GetByIdAsync(It.IsAny<string>()))
+             .Setup(pr => pr.GetByIdAsync(It.IsAny<ObjectId>()))
              .ReturnsAsync(user);
             var deleteUserCommandHandler = new DeleteUserByIdCommandHandler(this.userRepositoryAsync.Object);
 
@@ -127,7 +128,7 @@ namespace CleanArchitecture.UnitTests
             Assert.Equal(user.Id, userId);
 
 
-            Assert.NotNull(result.Data);
+            Assert.NotNull(result);
             Assert.Equal(command.Id, result.Data);
         }
 

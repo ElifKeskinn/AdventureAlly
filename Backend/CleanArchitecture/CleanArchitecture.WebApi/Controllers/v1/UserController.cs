@@ -7,6 +7,7 @@ using CleanArchitecture.Core.Wrappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> Get(ObjectId id)
         {
             return Ok(await Mediator.Send(new GetUserByIdQuery { Id = id }));
         }
@@ -43,7 +44,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
         // PUT api/<controller>/5
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Put(string id, UpdateUserCommand command)
+        public async Task<IActionResult> Put([FromRoute] ObjectId id, [FromRoute] UpdateUserCommand command)
         {
             if (id != command.Id)
             {
@@ -55,7 +56,7 @@ namespace CleanArchitecture.WebApi.Controllers.v1
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(ObjectId id)
         {
             return Ok(await Mediator.Send(new DeleteUserByIdCommand { Id = id }));
         }
