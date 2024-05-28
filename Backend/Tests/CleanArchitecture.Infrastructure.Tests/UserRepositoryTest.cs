@@ -36,6 +36,7 @@ namespace CleanArchitecture.Infrastructure.Tests
             var client = new MongoClient("mongodb://localhost:27017");
             var database = client.GetDatabase("testdb");
             userCollection = database.GetCollection<User>("users");
+
             /*  var database = new Mock<IMongoDatabase>();
               var userCollection = new Mock<IMongoCollection<User>>();
               // Mock veritabaný ve koleksiyonun ayarlanmasý

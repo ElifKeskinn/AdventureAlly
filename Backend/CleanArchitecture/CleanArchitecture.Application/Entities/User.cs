@@ -10,7 +10,7 @@ namespace CleanArchitecture.Core.Entities
         [BsonRepresentation(BsonType.ObjectId)]
 
         // ObjectId olarak saklanacak ayrı bir alan
-        public ObjectId UserPreferencesId { get; set; }
+        public ObjectId PreferencesId { get; set; }
         public string Name { get; set; }
         public string Place { get; set; }
         public List<Interests> Interests { get; set; }

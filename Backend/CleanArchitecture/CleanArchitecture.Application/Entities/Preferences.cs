@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 // Turistlerin tercihlerini ve bildirim tercihlerini saklar. Turistlerin ilgi alanlarýný, dil tercihlerini ve favori mekanlarýný içerir.
 namespace CleanArchitecture.Core.Entities
 {
-    public class UserPreferences : AuditableBaseEntity
+    public class Preferences : AuditableBaseEntity
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

@@ -37,7 +37,7 @@ namespace CleanArchitecture.UnitTests
         public void When_UpdateUserCommandHandlerInvoked_WithNotExistingUser_ShouldThrowEntityNotFoundException()
         {
             userRepositoryAsync
-                .Setup(pr => pr.GetByIdAsync(It.IsAny<String>()))
+                .Setup(pr => pr.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync((User)null);
 
             var updateUserCommandHandler = new UpdateUserCommandHandler(userRepositoryAsync.Object);
@@ -51,7 +51,7 @@ namespace CleanArchitecture.UnitTests
         public void When_UpdateUserCommandHandlerInvoked_WithNotUniqueEmail_ShouldThrowEmailIsNotUniqueException()
         {
             this.userRepositoryAsync
-                .Setup(pr => pr.GetByIdAsync(It.IsAny<String>()))
+                .Setup(pr => pr.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(this.fixture.Create<User>());
 
             this.userRepositoryAsync
@@ -74,7 +74,7 @@ namespace CleanArchitecture.UnitTests
             var userId = user.Id;
 
             this.userRepositoryAsync
-              .Setup(pr => pr.GetByIdAsync(It.IsAny<String>()))
+              .Setup(pr => pr.GetByIdAsync(It.IsAny<string>()))
               .ReturnsAsync(user);
 
             this.userRepositoryAsync
@@ -110,8 +110,13 @@ namespace CleanArchitecture.UnitTests
 
 
             this.userRepositoryAsync
-             .Setup(pr => pr.GetByIdAsync(It.IsAny<String>()))
+             .Setup(pr => pr.GetByIdAsync(It.IsAny<string>()))
              .ReturnsAsync(user);
+
+            this.userRepositoryAsync
+    .Setup(pr => pr.DeleteAsync(It.IsAny<User>()))
+    .Returns(Task.FromResult(true));
+
 
 
             this.userRepositoryAsync

@@ -25,7 +25,7 @@ namespace CleanArchitecture.Infrastructure.Contexts
         public IMongoCollection<LocalBusiness> LocalBusinesses => _database.GetCollection<LocalBusiness>("LocalBusinesses");
         public IMongoCollection<NotificationPreferences> NotificationPreferences => _database.GetCollection<NotificationPreferences>("NotificationPreferences");
         public IMongoCollection<TourPackage> TourPackages => _database.GetCollection<TourPackage>("TourPackages");
-        public IMongoCollection<UserPreferences> UserPreferences => _database.GetCollection<UserPreferences>("UserPreferences");
+        public IMongoCollection<Preferences> UserPreferences => _database.GetCollection<Preferences>("UserPreferences");
         public IMongoCollection<Interests> Interests => _database.GetCollection<Interests>("Interests");
 
         // Veritabanındaki değişiklikleri kaydetmek için SaveChangesAsync metodu ekledik.
