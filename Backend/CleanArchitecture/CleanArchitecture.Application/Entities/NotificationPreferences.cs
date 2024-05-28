@@ -7,8 +7,7 @@ namespace CleanArchitecture.Core.Entities
 
     public class NotificationPreferences : AuditableBaseEntity
     {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
+  
     public bool ReceiveDealNotifications { get; set; }
         public bool ReceiveEventNotifications { get; set; }
     }
