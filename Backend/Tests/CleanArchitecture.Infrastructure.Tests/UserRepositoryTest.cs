@@ -33,8 +33,8 @@ namespace CleanArchitecture.Infrastructure.Tests
             _authenticatedUserService = new Mock<IAuthenticatedUserService>();
 
 
-            var client = new MongoClient("mongodb://localhost:27017");
-            var database = client.GetDatabase("testdb");
+            var client = new MongoClient("mongodb+srv://elifkeskin233:incilemanadventure@adventureallycluster.4ibyufn.mongodb.net/AdventureAllyCluster?retryWrites=true&w=majority");
+            var database = client.GetDatabase("AdventureAllyCluster");
             userCollection = database.GetCollection<User>("users");
             /*  var database = new Mock<IMongoDatabase>();
               var userCollection = new Mock<IMongoCollection<User>>();
@@ -45,11 +45,10 @@ namespace CleanArchitecture.Infrastructure.Tests
             /* var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
         .UseInMemoryDatabase("TestDatabase");*/
 
-            //context = new ApplicationDbContext(database.Object, _dateTimeService.Object, _authenticatedUserService.Object);
             context = new ApplicationDbContext(null, _dateTimeService.Object, _authenticatedUserService.Object);
             userCollection.InsertOne(existingUser);
             context.AddAsync(existingUser).Wait();  // AddAsync metodunu kullanarak kullanýcýyý ekliyoruz
-           // context = new ApplicationDbContext(optionsBuilder.Options, _dateTimeService.Object, _authenticatedUserService.Object);
+           //context = new ApplicationDbContext(optionsBuilder.Options, _dateTimeService.Object, _authenticatedUserService.Object);
 
           //  context.Users.InsertOne(existingUser);
             context.SaveChanges();

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Core.Features.Users.Commands.CreateUser
 {
-    public partial class CreateUserCommand : IRequest<Response<int>>
+    public partial class CreateUserCommand : IRequest<Response<string>>
     {
         public string Name { get; set; }
         public string Place { get; set; }
@@ -18,7 +18,7 @@ namespace CleanArchitecture.Core.Features.Users.Commands.CreateUser
         public string Email { get; set; }
         public string Phone { get; set; }
     }
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<int>>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<string>>
     {
         private readonly IUserRepositoryAsync _userRepository;
         private readonly IMapper _mapper;
@@ -28,11 +28,11 @@ namespace CleanArchitecture.Core.Features.Users.Commands.CreateUser
             _mapper = mapper;
         }
 
-        public async Task<Response<int>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Response<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<User>(request);
             await _userRepository.AddAsync(user);
-            return new Response<int>(user.Id);
+            return new Response<string>(user.Id);
         }
     }
 }

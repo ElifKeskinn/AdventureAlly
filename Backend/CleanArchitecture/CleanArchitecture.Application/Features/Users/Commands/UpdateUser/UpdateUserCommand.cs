@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Core.Features.Users.Commands.UpdateUser
 {
-    public class UpdateUserCommand : IRequest<Response<int>>
+    public class UpdateUserCommand : IRequest<Response<string>>
     {
         public string Id { get; set; }
         public string Name { get; set; }
@@ -18,14 +18,14 @@ namespace CleanArchitecture.Core.Features.Users.Commands.UpdateUser
         public string PreferredLanguage { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Response<int>>
+        public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Response<string>>
         {
             private readonly IUserRepositoryAsync _userRepository;
             public UpdateUserCommandHandler(IUserRepositoryAsync userRepository)
             {
                 _userRepository = userRepository;
             }
-            public async Task<Response<int>> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
+            public async Task<Response<string>> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
             {
                 var user = await _userRepository.GetByIdAsync(command.Id);
 
@@ -50,7 +50,7 @@ public string Phone { get; set; }*/
                 user.PreferredLanguage = command.PreferredLanguage;
 
                 await _userRepository.UpdateAsync(user);
-                return new Response<int>(user.Id);
+                return new Response<string>(user.Id);
             }
         }
     }

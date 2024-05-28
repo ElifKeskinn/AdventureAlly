@@ -92,7 +92,7 @@ namespace CleanArchitecture.UnitTests
             if (result != null)
             {
                 Assert.NotNull(result.Data);
-                Assert.Equal(command.Id, result.Data.ToString());
+                Assert.Equal(command.Id, result.Data);
             }
             else
             {
@@ -100,7 +100,7 @@ namespace CleanArchitecture.UnitTests
                 Assert.False(true, "Handle method returned null result.");
             }
 
-        }/*
+        }
 
         [Fact]
         public async Task When_DeleteUserByIdCommandInvoked_ShouldDeleteUserReturnUserID()
@@ -124,10 +124,12 @@ namespace CleanArchitecture.UnitTests
             var cancellationToken = new CancellationToken();
 
             var result = await deleteUserCommandHandler.Handle(command, cancellationToken);
-            Assert.Equal(user.Id,userId);
-            */
+            Assert.Equal(user.Id, userId);
 
 
+            Assert.NotNull(result.Data);
+            Assert.Equal(command.Id, result.Data);
+        }
 
 
 
@@ -149,6 +151,4 @@ namespace CleanArchitecture.UnitTests
 
 
     }
-
-   
 }
